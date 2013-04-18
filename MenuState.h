@@ -24,7 +24,8 @@ public:
 	void buttonHit(OgreBites::Button* button);
  
 	void update(double timeSinceLastFrame);
- 
+        bool start(const CEGUI::EventArgs &e);
+        bool quit(const CEGUI::EventArgs &e);
 private:
 	bool m_bQuit;
 };

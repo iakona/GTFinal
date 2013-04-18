@@ -14,7 +14,7 @@ public:
  
 	AppStateManager();
 	~AppStateManager();
- 
+
 	void manageAppState(Ogre::String stateName, AppState* state);
  
 	AppState* findByName(Ogre::String stateName);

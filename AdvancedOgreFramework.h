@@ -19,13 +19,17 @@
 #include <OISMouse.h>
  
 #include <SdkTrays.h>
- 
+#include <CEGUI/CEGUI.h>
+#include <CEGUI/RendererModules/Ogre/CEGUIOgreRenderer.h>
+
 class OgreFramework : public Ogre::Singleton<OgreFramework>, OIS::KeyListener, OIS::MouseListener
 {
 public:
 	OgreFramework();
 	~OgreFramework();
- 
+
+        CEGUI::OgreRenderer* mRenderer;
+
 	bool initOgre(Ogre::String wndTitle, OIS::KeyListener *pKeyListener = 0, OIS::MouseListener *pMouseListener = 0);
 	void updateOgre(double timeSinceLastFrame);
  
@@ -46,7 +50,7 @@ public:
 	OIS::Keyboard*				m_pKeyboard;
 	OIS::Mouse*				m_pMouse;
  
-        OgreBites::SdkTrayManager*	        m_pTrayMgr;
+        //OgreBites::SdkTrayManager*	        m_pTrayMgr;
  
 private:
 	OgreFramework(const OgreFramework&);

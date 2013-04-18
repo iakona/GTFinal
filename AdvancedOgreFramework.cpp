@@ -15,13 +15,14 @@ OgreFramework::OgreFramework()
     m_pInputMgr			= 0;
     m_pKeyboard			= 0;
     m_pMouse			= 0;
-    m_pTrayMgr			= 0;
+    mRenderer                   = 0;
+    //m_pTrayMgr			= 0;
 }
 
 OgreFramework::~OgreFramework()
 {
     OgreFramework::getSingletonPtr()->m_pLog->logMessage("Shutdown OGRE...");
-    if(m_pTrayMgr)              delete m_pTrayMgr;
+    //if(m_pTrayMgr)              delete m_pTrayMgr;
     if(m_pInputMgr)		OIS::InputManager::destroyInputSystem(m_pInputMgr);
     if(m_pRoot)			delete m_pRoot;
 }
@@ -88,13 +89,21 @@ bool OgreFramework::initOgre(Ogre::String wndTitle, OIS::KeyListener *pKeyListen
     Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
     Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
  
-    m_pTrayMgr = new OgreBites::SdkTrayManager("AOFTrayMgr", m_pRenderWnd, m_pMouse, 0);
- 
+    // CEGUI setup
+    mRenderer = &CEGUI::OgreRenderer::bootstrapSystem();
+    CEGUI::Imageset::setDefaultResourceGroup("Imagesets");
+    CEGUI::Font::setDefaultResourceGroup("Fonts");
+    CEGUI::Scheme::setDefaultResourceGroup("Schemes");
+    CEGUI::WidgetLookManager::setDefaultResourceGroup("LookNFeel");
+    CEGUI::WindowManager::setDefaultResourceGroup("Layouts");
+    CEGUI::SchemeManager::getSingleton().create("TaharezLook.scheme");
+    CEGUI::System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
+
+    //m_pTrayMgr = new OgreBites::SdkTrayManager("AOFTrayMgr", m_pRenderWnd, m_pMouse, 0);
     m_pTimer = new Ogre::Timer();
     m_pTimer->reset();
  
     m_pRenderWnd->setActive(true);
- 
     return true;
 }
 
@@ -108,7 +117,7 @@ bool OgreFramework::keyPressed(const OIS::KeyEvent &keyEventRef)
  
     if(m_pKeyboard->isKeyDown(OIS::KC_O))
     {
-        if(m_pTrayMgr->isLogoVisible())
+        /*if(m_pTrayMgr->isLogoVisible())
         {
             m_pTrayMgr->hideFrameStats();
             m_pTrayMgr->hideLogo();
@@ -117,7 +126,7 @@ bool OgreFramework::keyPressed(const OIS::KeyEvent &keyEventRef)
         {
             m_pTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
             m_pTrayMgr->showLogo(OgreBites::TL_BOTTOMRIGHT);
-        }
+        }*/
     }
  
     return true;
