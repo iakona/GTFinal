@@ -2,7 +2,7 @@
 #define APP_STATE_H
  
 #include "AdvancedOgreFramework.h"
- 
+
 class AppState;
  
 class AppStateListener

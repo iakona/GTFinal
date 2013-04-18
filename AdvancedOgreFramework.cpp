@@ -3,7 +3,7 @@
 using namespace Ogre;
  
 template<> OgreFramework* Ogre::Singleton<OgreFramework>::ms_Singleton = 0;
- 
+
 OgreFramework::OgreFramework()
 {
     m_pRoot			= 0;

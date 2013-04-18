@@ -1,8 +1,8 @@
-noinst_HEADERS = AppState.h AdvancedOgreFramework.h AppStateManager.h MenuState.h PenguinApp.h
+noinst_HEADERS = AppState.h AdvancedOgreFramework.h AppStateManager.h MenuState.h PenguinApp.h GameState.h
 
 bin_PROGRAMS = PenguinQuest
 PenguinQuest_CPPFLAGS = -I$(top_srcdir)
-PenguinQuest_SOURCES = main.cpp AdvancedOgreFramework.cpp AppStateManager.cpp MenuState.cpp PenguinApp.cpp
+PenguinQuest_SOURCES = main.cpp AdvancedOgreFramework.cpp AppStateManager.cpp MenuState.cpp PenguinApp.cpp GameState.cpp
 
 PenguinQuest_CXXFLAGS = $(OGRE_CFLAGS) $(OIS_CFLAGS) $(bullet_CFLAGS) $(sdl_CFLAGS) $(SDL_net_CFLAGS) $(CEGUI_CFLAGS) $(CEGUI_OGRE_CFLAGS)
 PenguinQuest_LDADD = $(OGRE_LIBS) $(OIS_LIBS) $(bullet_LIBS) $(sdl_LIBS) $(SDL_net_LIBS) $(CEGUI_LIBS) $(CEGUI_OGRE_LIBS)
