@@ -86,7 +86,6 @@ void MenuState::createScene()
 
     new_game->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&MenuState::start, this));
     quit->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&MenuState::quit, this));
-    // CEGUI::WindowManager::getSingleton().destroyWindow( window );
 }
  
 void MenuState::exit()

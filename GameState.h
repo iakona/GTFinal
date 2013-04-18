@@ -24,9 +24,10 @@ public:
 	void buttonHit(OgreBites::Button* button);
  
 	void update(double timeSinceLastFrame);
-        bool back(const CEGUI::EventArgs &e);
-        bool quit(const CEGUI::EventArgs &e);
+        void getInput();
 private:
+        bool faceRight;
+        Ogre::SceneNode *PenguinNode;
 	bool m_bQuit;
 };
  
