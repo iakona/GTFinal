@@ -10,16 +10,15 @@ CEGUI::MouseButton convertButton2(OIS::MouseButtonID buttonID) {
       return CEGUI::RightButton;
     case OIS::MB_Middle:
       return CEGUI::MiddleButton;
-
     default:
       return CEGUI::LeftButton;
   }
 }
 
 GameState::GameState() {
-  m_bQuit     = false;
-  m_FrameEvent  = Ogre::FrameEvent();
-  faceRight     = true;
+  m_bQuit = false;
+  m_FrameEvent = Ogre::FrameEvent();
+  orientation = 0;
 }
  
 void GameState::enter() {
@@ -30,12 +29,11 @@ void GameState::enter() {
   m_pSceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
  
   m_pCamera = m_pSceneMgr->createCamera("GameCam");
-  m_pCamera->setPosition(Vector3(0, 15, 300));
+  m_pCamera->setPosition(Vector3(0, 15, -300));
   m_pCamera->lookAt(Vector3(0, 15, 0));
   m_pCamera->setNearClipDistance(1);
  
-  m_pCamera->setAspectRatio(Real(OgreFramework::getSingletonPtr()->m_pViewport->getActualWidth()) /
-    Real(OgreFramework::getSingletonPtr()->m_pViewport->getActualHeight()));
+  m_pCamera->setAspectRatio(Real(OgreFramework::getSingletonPtr()->m_pViewport->getActualWidth()) / Real(OgreFramework::getSingletonPtr()->m_pViewport->getActualHeight()));
 
   OgreFramework::getSingletonPtr()->m_pViewport->setCamera(m_pCamera);
 
@@ -45,11 +43,10 @@ void GameState::enter() {
 void GameState::createScene() {
   // game objects for demo
   Ogre::Entity* entPenguin = m_pSceneMgr->createEntity("Penguin", "penguin.mesh");
-    entPenguin->setCastShadows(true);
+  entPenguin->setCastShadows(true);
   PenguinNode = m_pSceneMgr->getRootSceneNode()->createChildSceneNode("PenguinNode", Ogre::Vector3(0,30,0));
   PenguinNode->attachObject(entPenguin);
-  PenguinNode->yaw( Ogre::Degree( 90 ) );
-  faceRight = true;
+  orientation = 0;
 
   Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
   Ogre::MeshManager::getSingleton().createPlane("ground", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
@@ -60,7 +57,7 @@ void GameState::createScene() {
   entGround->setMaterialName("Examples/Frost");
   entGround->setCastShadows(false);
 
-   CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
+  CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
   CEGUI::Window *gameWindow = wmgr.createWindow("DefaultWindow", "CEGUI/GameGUI");
   // text for demo
   CEGUI::Window *demoText = wmgr.createWindow("TaharezLook/StaticText", "CEGUI/Underconstruction");
@@ -75,7 +72,7 @@ void GameState::exit() {
   OgreFramework::getSingletonPtr()->m_pLog->logMessage("Leaving GameState...");
  
   m_pSceneMgr->destroyCamera(m_pCamera);
-  if(m_pSceneMgr)
+  if (m_pSceneMgr)
     OgreFramework::getSingletonPtr()->m_pRoot->destroySceneManager(m_pSceneMgr);
  
   /*OgreFramework::getSingletonPtr()->m_pTrayMgr->clearAllTrays();
@@ -84,8 +81,7 @@ void GameState::exit() {
 }
 
 bool GameState::keyPressed(const OIS::KeyEvent &keyEventRef) {
-  if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_ESCAPE))
-  {
+  if (OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_ESCAPE)) {
     CEGUI::WindowManager::getSingleton().destroyWindow( "CEGUI/GameGUI" );
     popAllAndPushAppState(findByName("MenuState"));
     return true;
@@ -131,26 +127,32 @@ void GameState::update(double timeSinceLastFrame) {
   CEGUI::System::getSingleton().injectTimePulse(m_FrameEvent.timeSinceLastFrame);
   // OgreFramework::getSingletonPtr()->m_pTrayMgr->frameRenderingQueued(m_FrameEvent);
   getInput();
-  if(m_bQuit == true) {
+  if (m_bQuit == true) {
     shutdown();
     return;
   }
 }
 
 void GameState::getInput() {
-  if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_A)||OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_LEFT)) {
-    if(faceRight) {
-      PenguinNode->yaw( Ogre::Degree( 180 ) );
-      faceRight = false;
-    }
-    PenguinNode->translate(-5.0f,0.0f,0.0f);
+  OIS::Keyboard* keyboard = OgreFramework::getSingletonPtr()->m_pKeyboard;
+  if (keyboard->isKeyDown(OIS::KC_Q)) {
+    PenguinNode->yaw(Ogre::Degree(5));
   }
-
-  if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_D)||OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_RIGHT)) {
-    if(!faceRight) {
-      PenguinNode->yaw( Ogre::Degree( 180 ) );
-      faceRight = true;
-    }
-    PenguinNode->translate(5.0f,0.0f,0.0f);
+  if (keyboard->isKeyDown(OIS::KC_E)) {
+    PenguinNode->yaw(Ogre::Degree(-5));
+  }
+  Ogre::Vector3 dir = PenguinNode->getOrientation() * Ogre::Vector3::UNIT_Z;
+  std::cout << dir[0] << " " << dir[1] << " " << dir[2] << std::endl;
+  if (keyboard->isKeyDown(OIS::KC_W) || keyboard->isKeyDown(OIS::KC_UP)) {
+    PenguinNode->translate(5.0f * dir[0], 0.0f, 5.0f * dir[2]);
+  }
+  if (keyboard->isKeyDown(OIS::KC_S) || keyboard->isKeyDown(OIS::KC_DOWN)) {
+    PenguinNode->translate(-5.0f * dir[0], 0.0f, -5.0f * dir[2]);
+  }
+  if (keyboard->isKeyDown(OIS::KC_A) || keyboard->isKeyDown(OIS::KC_LEFT)) {
+    PenguinNode->translate(5.0f * dir[2], 0.0f, -5.0f * dir[0]);
+  }
+  if (keyboard->isKeyDown(OIS::KC_D) || keyboard->isKeyDown(OIS::KC_RIGHT)) {
+    PenguinNode->translate(-5.0f * dir[2], 0.0f, 5.0f * dir[0]);
   }
 }

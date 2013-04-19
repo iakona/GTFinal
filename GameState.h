@@ -26,7 +26,7 @@ class GameState : public AppState {
     void getInput();
     
   private:
-    bool faceRight;
+    int orientation; // 0 = Up, 1 = Left, 2 = Down, 3 = Right
     Ogre::SceneNode *PenguinNode;
     bool m_bQuit;
 };

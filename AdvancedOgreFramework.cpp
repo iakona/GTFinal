@@ -22,9 +22,9 @@ OgreFramework::~OgreFramework() {
   OgreFramework::getSingletonPtr()->m_pLog->logMessage("Shutdown OGRE...");
   //if(m_pTrayMgr)
     //delete m_pTrayMgr;
-  if(m_pInputMgr)
+  if (m_pInputMgr)
     OIS::InputManager::destroyInputSystem(m_pInputMgr);
-  if(m_pRoot)
+  if (m_pRoot)
     delete m_pRoot;
 }
 
@@ -36,8 +36,8 @@ bool OgreFramework::initOgre(Ogre::String wndTitle, OIS::KeyListener *pKeyListen
  
   m_pRoot = new Ogre::Root();
  
-  if(!m_pRoot->showConfigDialog())
-      return false;
+  if (!m_pRoot->showConfigDialog())
+    return false;
   m_pRenderWnd = m_pRoot->initialise(true, wndTitle);
  
   m_pViewport = m_pRenderWnd->addViewport(0);
@@ -59,12 +59,12 @@ bool OgreFramework::initOgre(Ogre::String wndTitle, OIS::KeyListener *pKeyListen
   m_pMouse->getMouseState().height = m_pRenderWnd->getHeight();
   m_pMouse->getMouseState().width  = m_pRenderWnd->getWidth();
  
-  if(pKeyListener == 0)
+  if (pKeyListener == 0)
     m_pKeyboard->setEventCallback(this);
   else
     m_pKeyboard->setEventCallback(pKeyListener);
  
-  if(pMouseListener == 0)
+  if (pMouseListener == 0)
     m_pMouse->setEventCallback(this);
   else
     m_pMouse->setEventCallback(pMouseListener);
@@ -106,12 +106,12 @@ bool OgreFramework::initOgre(Ogre::String wndTitle, OIS::KeyListener *pKeyListen
 }
 
 bool OgreFramework::keyPressed(const OIS::KeyEvent &keyEventRef) {
-  if(m_pKeyboard->isKeyDown(OIS::KC_SYSRQ)) {
+  if (m_pKeyboard->isKeyDown(OIS::KC_SYSRQ)) {
     m_pRenderWnd->writeContentsToTimestampedFile("AOF_Screenshot_", ".jpg");
     return true;
   }
  
-  if(m_pKeyboard->isKeyDown(OIS::KC_O)) {
+  if (m_pKeyboard->isKeyDown(OIS::KC_O)) {
     /*if(m_pTrayMgr->isLogoVisible()) {
       m_pTrayMgr->hideFrameStats();
       m_pTrayMgr->hideLogo();
@@ -125,19 +125,19 @@ bool OgreFramework::keyPressed(const OIS::KeyEvent &keyEventRef) {
 }
 
 bool OgreFramework::keyReleased(const OIS::KeyEvent &keyEventRef) {
-    return true;
+  return true;
 }
  
 bool OgreFramework::mouseMoved(const OIS::MouseEvent &evt) {
-    return true;
+  return true;
 }
  
 bool OgreFramework::mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID id) {
-    return true;
+  return true;
 }
  
 bool OgreFramework::mouseReleased(const OIS::MouseEvent &evt, OIS::MouseButtonID id) {
-    return true;
+  return true;
 }
 
 void OgreFramework::updateOgre(double timeSinceLastFrame) {

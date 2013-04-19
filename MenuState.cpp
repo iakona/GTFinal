@@ -10,16 +10,15 @@ CEGUI::MouseButton convertButton(OIS::MouseButtonID buttonID) {
       return CEGUI::RightButton;
     case OIS::MB_Middle:
       return CEGUI::MiddleButton;
- 
     default:
       return CEGUI::LeftButton;
   }
 }
 
 MenuState::MenuState() {
-  m_bQuit     = false;
-  m_FrameEvent  = Ogre::FrameEvent();
-  created     = false;
+  m_bQuit = false;
+  m_FrameEvent = Ogre::FrameEvent();
+  created = false;
 }
  
 void MenuState::enter() {
@@ -33,8 +32,7 @@ void MenuState::enter() {
   m_pCamera->lookAt(Vector3(0, 0, 0));
   m_pCamera->setNearClipDistance(1);
  
-  m_pCamera->setAspectRatio(Real(OgreFramework::getSingletonPtr()->m_pViewport->getActualWidth()) /
-    Real(OgreFramework::getSingletonPtr()->m_pViewport->getActualHeight()));
+  m_pCamera->setAspectRatio(Real(OgreFramework::getSingletonPtr()->m_pViewport->getActualWidth()) / Real(OgreFramework::getSingletonPtr()->m_pViewport->getActualHeight()));
  
   OgreFramework::getSingletonPtr()->m_pViewport->setCamera(m_pCamera);
  
@@ -85,7 +83,7 @@ void MenuState::exit() {
   OgreFramework::getSingletonPtr()->m_pLog->logMessage("Leaving MenuState...");
  
   m_pSceneMgr->destroyCamera(m_pCamera);
-  if(m_pSceneMgr)
+  if (m_pSceneMgr)
     OgreFramework::getSingletonPtr()->m_pRoot->destroySceneManager(m_pSceneMgr);
  
   /*OgreFramework::getSingletonPtr()->m_pTrayMgr->clearAllTrays();
@@ -94,8 +92,7 @@ void MenuState::exit() {
 }
 
 bool MenuState::keyPressed(const OIS::KeyEvent &keyEventRef) {
-  if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_ESCAPE))
-  {
+  if (OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_ESCAPE)) {
     m_bQuit = true;
     return true;
   }
@@ -140,8 +137,7 @@ void MenuState::update(double timeSinceLastFrame) {
   CEGUI::System::getSingleton().injectTimePulse(m_FrameEvent.timeSinceLastFrame);
   // OgreFramework::getSingletonPtr()->m_pTrayMgr->frameRenderingQueued(m_FrameEvent);
  
-  if(m_bQuit == true)
-  {
+  if (m_bQuit == true) {
     shutdown();
     return;
   }
