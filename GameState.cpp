@@ -46,7 +46,7 @@ void GameState::createScene() {
   entPenguin->setCastShadows(true);
   PenguinNode = m_pSceneMgr->getRootSceneNode()->createChildSceneNode("PenguinNode", Ogre::Vector3(0,30,0));
   PenguinNode->attachObject(entPenguin);
-  orientation = 0;
+  PenguinNode->createChildSceneNode("CameraNode")->attachObject(m_pCamera);
 
   Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
   Ogre::MeshManager::getSingleton().createPlane("ground", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
@@ -142,7 +142,6 @@ void GameState::getInput() {
     PenguinNode->yaw(Ogre::Degree(-5));
   }
   Ogre::Vector3 dir = PenguinNode->getOrientation() * Ogre::Vector3::UNIT_Z;
-  std::cout << dir[0] << " " << dir[1] << " " << dir[2] << std::endl;
   if (keyboard->isKeyDown(OIS::KC_W) || keyboard->isKeyDown(OIS::KC_UP)) {
     PenguinNode->translate(5.0f * dir[0], 0.0f, 5.0f * dir[2]);
   }
