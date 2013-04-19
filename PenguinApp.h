@@ -4,16 +4,14 @@
 #include "AdvancedOgreFramework.h"
 #include "AppStateManager.h"
  
-class PenguinApp
-{
-public:
-	PenguinApp();
-	~PenguinApp();
+class PenguinApp {
+  public:
+    PenguinApp();
+    ~PenguinApp();
+    void startGame();
  
-	void startGame();
- 
-private:
-	AppStateManager*	m_pAppStateManager;
+  private:
+    AppStateManager* m_pAppStateManager;
 };
  
 #endif
