@@ -1,8 +1,5 @@
 #include "PenguinApp.h"
  
-#include "MenuState.h"
-#include "GameState.h"
- 
 PenguinApp::PenguinApp() {
   m_pAppStateManager = 0;
 }

@@ -3,6 +3,8 @@
  
 #include "AdvancedOgreFramework.h"
 #include "AppStateManager.h"
+#include "MenuState.h"
+#include "GameState.h"
  
 class PenguinApp {
   public:

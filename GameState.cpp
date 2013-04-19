@@ -18,7 +18,6 @@ CEGUI::MouseButton convertButton2(OIS::MouseButtonID buttonID) {
 GameState::GameState() {
   m_bQuit = false;
   m_FrameEvent = Ogre::FrameEvent();
-  orientation = 0;
 }
  
 void GameState::enter() {
