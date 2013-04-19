@@ -40,21 +40,11 @@ void GameState::enter() {
 }
 
 void GameState::createScene() {
-  // game objects for demo
-  Ogre::Entity* entPenguin = m_pSceneMgr->createEntity("Penguin", "penguin.mesh");
-  entPenguin->setCastShadows(true);
-  PenguinNode = m_pSceneMgr->getRootSceneNode()->createChildSceneNode("PenguinNode", Ogre::Vector3(0,30,0));
-  PenguinNode->attachObject(entPenguin);
-  PenguinNode->createChildSceneNode("CameraNode")->attachObject(m_pCamera);
-
-  Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
-  Ogre::MeshManager::getSingleton().createPlane("ground", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-  plane, 1500, 1500, 20, 20, true, 1, 5, 5, Ogre::Vector3::UNIT_Z);
-
-  Ogre::Entity* entGround = m_pSceneMgr->createEntity("Ground", "ground");
-  m_pSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(entGround);
-  entGround->setMaterialName("Examples/Frost");
-  entGround->setCastShadows(false);
+  graphics = new Graphics(m_pSceneMgr);
+  physics = new Physics(graphics);
+  graphics->setPhysics(physics);
+  physics->initialize();
+  PenguinNode = m_pSceneMgr->getSceneNode("penguin");
 
   CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
   CEGUI::Window *gameWindow = wmgr.createWindow("DefaultWindow", "CEGUI/GameGUI");

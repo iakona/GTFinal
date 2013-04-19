@@ -2,6 +2,7 @@
 #define GAME_STATE_H
  
 #include "AppState.h"
+#include "Physics.h"
  
 class GameState : public AppState {
   public:
@@ -28,6 +29,8 @@ class GameState : public AppState {
   private:
     Ogre::SceneNode *PenguinNode;
     bool m_bQuit;
+    Graphics* graphics;
+    Physics* physics;
 };
  
 #endif
