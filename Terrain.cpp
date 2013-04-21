@@ -18,7 +18,7 @@ Terrain::Terrain(Ogre::SceneManager* sceneMgr, std::string name, Ogre::Real x, O
   sceneNode->attachObject(entity);
   sceneNode->scale(scalex, scaley, scalez);
   sceneNode->translate(x, y, z);
-  entity->setMaterialName("Examples/GrassFloor");
+  entity->setMaterialName("Examples/Frost");
 
   setNode(sceneNode);
 }

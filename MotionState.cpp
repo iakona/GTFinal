@@ -14,6 +14,7 @@ void MotionState::getWorldTransform(btTransform &worldTrans) const {
 }
 
 void MotionState::setWorldTransform(const btTransform &worldTrans) {
+  std::cout << "update" << std::endl;
   btVector3 pos = worldTrans.getOrigin();
   graphics->setObjectPosition(nodeName, pos.x(), pos.y(), pos.z());
   btQuaternion rot = worldTrans.getRotation();

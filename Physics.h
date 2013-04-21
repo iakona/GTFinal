@@ -19,6 +19,8 @@ class Physics {
     void addPenguin(std::string name);
     void addGround(std::string name, btScalar x, btScalar y, btScalar z, btScalar l, btScalar h, btScalar w);
     void addWall(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w);
+    void translate(int index, btScalar x, btScalar y, btScalar z);
+    void stop(int index);
 
   private:
     btDefaultCollisionConfiguration* collisionConfiguration;

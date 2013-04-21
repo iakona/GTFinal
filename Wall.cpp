@@ -15,8 +15,8 @@ Wall::Wall(Ogre::SceneManager* sceneMgr, std::string name,
 }
 
 Wall::Wall(Ogre::SceneManager* sceneMgr, std::string name,
-    Ogre::Real x, Ogre::Real y, Ogre::Real z, Ogre::Radian angle,
-    Ogre::Real l, Ogre::Real h, Ogre::Real w) {
+  Ogre::Real x, Ogre::Real y, Ogre::Real z, Ogre::Radian angle,
+  Ogre::Real l, Ogre::Real h, Ogre::Real w) {
   Ogre::Entity* entity = sceneMgr->createEntity(name, "cube.mesh");
   Ogre::SceneNode* sceneNode = sceneMgr->getRootSceneNode()->createChildSceneNode(name);
   sceneNode->attachObject(entity);

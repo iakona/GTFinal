@@ -22,20 +22,21 @@ void Physics::step(void) {
 void Physics::initialize(void) {
   addPenguin("penguin");
   addGround("ground", 0, 0, 0, 1500, 0, 1500);
-  addWall("wall0", 0, 100, -150, 0, 100, 100, 100);
+  addWall("wall0", 0, 100, 250, 0, 100, 100, 100);
 }
 
 void Physics::addGameObject(PhysicsBody* obj, int type, std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w) {
   gameBodies.push_back(obj);
   dynamicWorld->addRigidBody(obj->getBody());
-  obj->getBody()->setUserPointer(gameBodies[gameBodies.size()-1]);
+  //obj->getBody()->setUserPointer(gameBodies[gameBodies.size()-1]);
   graphics->addGameObject(type, name, x, y, z, angle, l, h, w);
 }
 
 void Physics::addPenguin(std::string name) {
   MotionState* motionState = new MotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)), graphics, name);
 
-  btCollisionShape* shape = new btBoxShape(btVector3(61.7703 / 2, 47.0496 / 2, 48.3053 / 2));
+//   btCollisionShape* shape = new btBoxShape(btVector3(61.7703 / 2, 47.0496 / 2, 48.3053 / 2));
+  btCollisionShape* shape = new btBoxShape(btVector3(10, 10, 10));
   btScalar mass = 1;
   btVector3 inertia(0,0,0);
   shape->calculateLocalInertia(mass,inertia);
@@ -88,4 +89,17 @@ void Physics::addWall(std::string name, btScalar x, btScalar y, btScalar z, btSc
 
   PhysicsBody* physicsBody = new PhysicsBody(body, motionState);
   addGameObject(physicsBody, 2, name, x, y, z, angle, l, h, w);
+}
+
+void Physics::translate(int index, btScalar x, btScalar y, btScalar z) {
+  std::cout << "moving" << std::endl;
+  btRigidBody* body = gameBodies.at(index)->getBody();
+  //body->translate(btVector3(x, y, z));
+  body->translate(btVector3(x, y, z));
+}
+
+void Physics::stop(int index) {
+  std::cout << "stopped" << std::endl;
+  btRigidBody* body = gameBodies.at(index)->getBody();
+  //body->setLinearVelocity(btVector3(0, 0, 0));
 }
