@@ -21,6 +21,7 @@ class Physics {
     void addWall(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w);
     void translate(int index, btScalar x, btScalar y, btScalar z);
     void rotate(int index, btScalar angle);
+    void applyForce(int index, btScalar x, btScalar y, btScalar z);
     void stop(int index);
 
   private:

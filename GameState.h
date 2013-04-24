@@ -31,6 +31,7 @@ class GameState : public AppState {
     bool m_bQuit;
     Graphics* graphics;
     Physics* physics;
+    bool jumpDown;
 };
  
 #endif
