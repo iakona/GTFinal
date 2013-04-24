@@ -103,9 +103,11 @@ void Physics::translate(int index, btScalar x, btScalar y, btScalar z) {
 
 void Physics::rotate(int index, btScalar angle) {
   btRigidBody* body = gameBodies.at(index)->getBody();
-  btTransform transform = body.getWorldTrans();
+  btTransform transform = body->getWorldTransform();
   btQuaternion rotate = transform.getRotation();
   rotate.setRotation(rotate.getAxis(), rotate.getAngle() + angle);
+  transform.setRotation(rotate);
+  body->setWorldTransform(transform);
 }
 
 void Physics::stop(int index) {
