@@ -20,6 +20,7 @@ class Physics {
     void addGround(std::string name, btScalar x, btScalar y, btScalar z, btScalar l, btScalar h, btScalar w);
     void addWall(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w);
     void translate(int index, btScalar x, btScalar y, btScalar z);
+    void rotate(int index, btScalar angle);
     void stop(int index);
 
   private:

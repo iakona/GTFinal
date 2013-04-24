@@ -22,7 +22,7 @@ void Physics::step(void) {
 void Physics::initialize(void) {
   addPenguin("penguin");
   addGround("ground", 0, 0, 0, 1500, 0, 1500);
-  addWall("wall0", 0, 100, 250, 0, 100, 100, 100);
+  //addWall("wall0", 0, 100, 250, 0, 100, 100, 100);
 }
 
 void Physics::addGameObject(PhysicsBody* obj, int type, std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w) {
@@ -37,6 +37,7 @@ void Physics::addPenguin(std::string name) {
 
 //   btCollisionShape* shape = new btBoxShape(btVector3(61.7703 / 2, 47.0496 / 2, 48.3053 / 2));
   btCollisionShape* shape = new btBoxShape(btVector3(10, 10, 10));
+  //btCollisionShape* shape = new btSphereShape(2);
   btScalar mass = 1;
   btVector3 inertia(0,0,0);
   shape->calculateLocalInertia(mass,inertia);
@@ -44,7 +45,7 @@ void Physics::addPenguin(std::string name) {
   btRigidBody* body = new btRigidBody(info);
 
   body->setRestitution(.78);
-  body->setFriction(1);
+  //body->setFriction(1);
   body->setDamping(.4,.2);
   body->setActivationState(DISABLE_DEACTIVATION);
 
@@ -62,7 +63,7 @@ void Physics::addGround(std::string name, btScalar x, btScalar y, btScalar z, bt
   btRigidBody* body = new btRigidBody(info);
 
   body->setRestitution(.75);
-  body->setFriction(.5);
+  //body->setFriction(.5);
   body->setDamping(.4,.2);
   body->setActivationState(DISABLE_DEACTIVATION);
 
@@ -94,8 +95,17 @@ void Physics::addWall(std::string name, btScalar x, btScalar y, btScalar z, btSc
 void Physics::translate(int index, btScalar x, btScalar y, btScalar z) {
   std::cout << "moving" << std::endl;
   btRigidBody* body = gameBodies.at(index)->getBody();
-  //body->translate(btVector3(x, y, z));
   body->translate(btVector3(x, y, z));
+  //body->translate(btVector3(1000, 0, 0));
+  //body->setLinearVelocity(btVector3(x, y, z));
+  //body->applyCentralForce(btVector3(x, y, z));
+}
+
+void Physics::rotate(int index, btScalar angle) {
+  btRigidBody* body = gameBodies.at(index)->getBody();
+  btTransform transform = body.getWorldTrans();
+  btQuaternion rotate = transform.getRotation();
+  rotate.setRotation(rotate.getAxis(), rotate.getAngle() + angle);
 }
 
 void Physics::stop(int index) {
