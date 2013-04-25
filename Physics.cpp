@@ -22,7 +22,7 @@ void Physics::step(void) {
 void Physics::initialize(void) {
   addPenguin("penguin");
   addGround("ground", 0, 0, 0, 1500, 0, 1500);
-  //addWall("wall0", 0, 100, 250, 0, 100, 100, 100);
+  addWall("wall0", 0, 100, 250, 0, 100, 100, 100);
 }
 
 void Physics::addGameObject(PhysicsBody* obj, int type, std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w) {
@@ -38,7 +38,7 @@ void Physics::addPenguin(std::string name) {
 //   btCollisionShape* shape = new btBoxShape(btVector3(61.7703 / 2, 47.0496 / 2, 48.3053 / 2));
   btCollisionShape* shape = new btBoxShape(btVector3(10, 30, 10));
   //btCollisionShape* shape = new btSphereShape(2);
-  btScalar mass = 100;
+  btScalar mass = 1;
   btVector3 inertia(0,0,0);
   shape->calculateLocalInertia(mass,inertia);
   btRigidBody::btRigidBodyConstructionInfo info(mass,motionState,shape,inertia);
@@ -124,8 +124,13 @@ void Physics::rotate(int index, btScalar angle) {
   btQuaternion quat;
   quat.setEuler(angle,0,0); //or quat.setEulerZYX depending on the ordering you want
   tr.setRotation(quat);
-  btTransform transform = body->getWorldTransform();
-  body->setWorldTransform(tr * transform);
+  btTransform transform = body->getCenterOfMassTransform();
+  transform.setRotation(transform.getRotation() * quat);
+  //tr.setBasis(transform.getBasis());
+  //tr.setOrigin(transform.getOrigin());
+  //transform.setRotation(transform.getRotation() + quat);
+  //body->setCenterOfMassTransform(tr * transform);
+  body->setCenterOfMassTransform(transform);
 }
 
 void Physics::applyForce(int index, btScalar x, btScalar y, btScalar z) {

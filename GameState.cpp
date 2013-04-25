@@ -161,7 +161,7 @@ void GameState::getInput() {
   }
   if (keyboard->isKeyDown(OIS::KC_SPACE)) {
     if(!jumpDown){
-      physics->applyForce(0, 0, 3000, 0);
+      physics->applyForce(0, 0, 300, 0);
       jumpDown = true;
     }
   }
