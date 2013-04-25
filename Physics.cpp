@@ -33,12 +33,12 @@ void Physics::addGameObject(PhysicsBody* obj, int type, std::string name, btScal
 }
 
 void Physics::addPenguin(std::string name) {
-  MotionState* motionState = new MotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,10,0)), graphics, name);
+  MotionState* motionState = new MotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,30,0)), graphics, name);
 
 //   btCollisionShape* shape = new btBoxShape(btVector3(61.7703 / 2, 47.0496 / 2, 48.3053 / 2));
-  btCollisionShape* shape = new btBoxShape(btVector3(10, 10, 10));
+  btCollisionShape* shape = new btBoxShape(btVector3(10, 30, 10));
   //btCollisionShape* shape = new btSphereShape(2);
-  btScalar mass = 1;
+  btScalar mass = 100;
   btVector3 inertia(0,0,0);
   shape->calculateLocalInertia(mass,inertia);
   btRigidBody::btRigidBodyConstructionInfo info(mass,motionState,shape,inertia);
@@ -126,6 +126,11 @@ void Physics::rotate(int index, btScalar angle) {
   tr.setRotation(quat);
   btTransform transform = body->getWorldTransform();
   body->setWorldTransform(tr * transform);
+}
+
+void Physics::applyForce(int index, btScalar x, btScalar y, btScalar z) {
+  btRigidBody* body = gameBodies.at(index)->getBody();
+  body->applyCentralForce(btVector3(x, y, z));
 }
 
 void Physics::stop(int index) {
