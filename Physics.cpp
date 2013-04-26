@@ -22,7 +22,9 @@ void Physics::step(void) {
 void Physics::initialize(void) {
   addPenguin("penguin");
   addGround("ground", 0, 0, 0, 1500, 0, 1500);
-  addWall("wall0", 0, 50, 250, 0, 50, 50, 50);
+  addWall("wall0", 0, 40, 250, 0, 40, 40, 40);
+  addWall("wall1", 0, 120, 330, 0, 40, 40, 40);
+  addWall("wall2", 0, 120, 690, 0, 40, 40, 40);
 }
 
 void Physics::addGameObject(PhysicsBody* obj, int type, std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w) {
@@ -44,10 +46,10 @@ void Physics::addPenguin(std::string name) {
   btRigidBody::btRigidBodyConstructionInfo info(mass,motionState,shape,inertia);
   btRigidBody* body = new btRigidBody(info);
 
-  body->setRestitution(.78);
+  //body->setRestitution(.78);
   body->setFriction(1);
   body->setDamping(.4,.2);
-//   body->setRestitution(0);
+  body->setRestitution(0);
 //   body->setFriction(0);
 //   body->setDamping(0,0);
   body->setActivationState(DISABLE_DEACTIVATION);
@@ -90,6 +92,7 @@ void Physics::addWall(std::string name, btScalar x, btScalar y, btScalar z, btSc
   btRigidBody::btRigidBodyConstructionInfo info(mass,motionState,shape,intertia);
   btRigidBody* body = new btRigidBody(info);
   body->setRestitution(.85);
+  //body->setRestitution(0);
   body->setLinearVelocity(btVector3(0,0,0));
   body->setFriction(1);
   body->setDamping(0,.2);

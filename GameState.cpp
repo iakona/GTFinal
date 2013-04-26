@@ -128,11 +128,11 @@ void GameState::getInput() {
   //bool moving = false;
   if (keyboard->isKeyDown(OIS::KC_Q)) {
     //PenguinNode->yaw(Ogre::Degree(5));
-    physics->rotate(0, Ogre::Degree(5).valueRadians());
+    physics->rotate(0, Ogre::Degree(3).valueRadians());
   }
   if (keyboard->isKeyDown(OIS::KC_E)) {
     //PenguinNode->yaw(Ogre::Degree(-5));
-    physics->rotate(0, Ogre::Degree(-5).valueRadians());
+    physics->rotate(0, Ogre::Degree(-3).valueRadians());
   }
   Ogre::Vector3 dir = PenguinNode->getOrientation() * Ogre::Vector3::UNIT_Z;
   if (keyboard->isKeyDown(OIS::KC_W) || keyboard->isKeyDown(OIS::KC_UP)) {
@@ -156,8 +156,9 @@ void GameState::getInput() {
     //moving = true;
   }
   if (keyboard->isKeyDown(OIS::KC_SPACE)) {
+    //std::cout << "jump" << std::endl;
     if(!graphics->getJumping()){
-      physics->applyForce(0, 0, 16000, 0);
+      physics->applyForce(0, 0, 14000, 0);
       graphics->setJumping(true);
     }
   }
