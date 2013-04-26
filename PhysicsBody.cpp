@@ -1,6 +1,6 @@
 #include "PhysicsBody.h"
 
-PhysicsBody::PhysicsBody(btRigidBody* rigidBody, MotionState* motionState) {
+PhysicsBody::PhysicsBody(btRigidBody* rigidBody, btMotionState* motionState) {
   body = rigidBody;
   ms = motionState;
 }
@@ -18,6 +18,6 @@ btRigidBody* PhysicsBody::setBody(btRigidBody* rigidBody) {
   body = rigidBody;
 }
 
-btRigidBody* PhysicsBody::setMotion(MotionState* motionState) {
+btRigidBody* PhysicsBody::setMotion(btMotionState* motionState) {
   ms = motionState;
 }

@@ -18,7 +18,6 @@ CEGUI::MouseButton convertButton2(OIS::MouseButtonID buttonID) {
 GameState::GameState() {
   m_bQuit = false;
   m_FrameEvent = Ogre::FrameEvent();
-  jumpDown = false;
 }
  
 void GameState::enter() {
@@ -87,9 +86,6 @@ bool GameState::keyPressed(const OIS::KeyEvent &keyEventRef) {
 bool GameState::keyReleased(const OIS::KeyEvent &keyEventRef) {
   OgreFramework::getSingletonPtr()->keyReleased(keyEventRef);
   //CEGUI::System::getSingleton().injectKeyUp(keyEventRef.key);
-  if(keyEventRef.key == OIS::KC_SPACE){
-    jumpDown = false;
-  }
   return true;
 }
  
@@ -160,9 +156,9 @@ void GameState::getInput() {
     //moving = true;
   }
   if (keyboard->isKeyDown(OIS::KC_SPACE)) {
-    if(!jumpDown){
-      physics->applyForce(0, 0, 300, 0);
-      jumpDown = true;
+    if(!graphics->getJumping()){
+      physics->applyForce(0, 0, 16000, 0);
+      graphics->setJumping(true);
     }
   }
   //if (!moving)

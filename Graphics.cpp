@@ -2,6 +2,7 @@
 
 Graphics::Graphics(Ogre::SceneManager* mSceneMgr) {
   sceneMgr = mSceneMgr;
+  jumping = false;
 }
 
 Graphics::~Graphics(void) {
@@ -30,4 +31,12 @@ void Graphics::addGameObject(int type, std::string name, Ogre::Real x, Ogre::Rea
     obj = new Wall(sceneMgr, name, x, y, z, Ogre::Radian(angle), l, h, w);
   }
   gameObjects.push_back(obj);
+}
+
+void Graphics::setJumping(bool jump) {
+ jumping = jump; 
+}
+
+bool Graphics::getJumping() {
+  return jumping;
 }

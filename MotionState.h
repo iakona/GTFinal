@@ -17,6 +17,8 @@ class MotionState : public btMotionState {
     btTransform mPos1;
     Graphics* graphics;
     std::string nodeName;
+    btScalar prev;
+    bool jumping;
 };
 
 #endif // #ifndef __MotionState_h_

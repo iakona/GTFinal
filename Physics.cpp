@@ -6,7 +6,7 @@ Physics::Physics(Graphics* graphic) {
   overlappingPairCache = new btDbvtBroadphase();
   solver = new btSequentialImpulseConstraintSolver();
   dynamicWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
-  dynamicWorld->setGravity(btVector3(0,-1,0));
+  dynamicWorld->setGravity(btVector3(0,-300,0));
   dynamicWorld->getSolverInfo().m_splitImpulse = true;
   graphics = graphic;
 }
@@ -22,7 +22,7 @@ void Physics::step(void) {
 void Physics::initialize(void) {
   addPenguin("penguin");
   addGround("ground", 0, 0, 0, 1500, 0, 1500);
-  addWall("wall0", 0, 100, 250, 0, 100, 100, 100);
+  addWall("wall0", 0, 50, 250, 0, 50, 50, 50);
 }
 
 void Physics::addGameObject(PhysicsBody* obj, int type, std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w) {
@@ -33,10 +33,10 @@ void Physics::addGameObject(PhysicsBody* obj, int type, std::string name, btScal
 }
 
 void Physics::addPenguin(std::string name) {
-  MotionState* motionState = new MotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,30,0)), graphics, name);
+  MotionState* motionState = new MotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,25,0)), graphics, name);
 
 //   btCollisionShape* shape = new btBoxShape(btVector3(61.7703 / 2, 47.0496 / 2, 48.3053 / 2));
-  btCollisionShape* shape = new btBoxShape(btVector3(10, 30, 10));
+  btCollisionShape* shape = new btBoxShape(btVector3(30, 25, 25));
   //btCollisionShape* shape = new btSphereShape(2);
   btScalar mass = 1;
   btVector3 inertia(0,0,0);
@@ -51,6 +51,7 @@ void Physics::addPenguin(std::string name) {
 //   body->setFriction(0);
 //   body->setDamping(0,0);
   body->setActivationState(DISABLE_DEACTIVATION);
+  body->setAngularFactor(btVector3(0, 1, 0));
 
   PhysicsBody* physicsBody = new PhysicsBody(body, motionState);
   addGameObject(physicsBody, 0, name, 0, 0, 0, 0, 0, 0, 0);
@@ -119,11 +120,11 @@ void Physics::rotate(int index, btScalar angle) {
   rotate.setRotation(axis, rotate.getAngle() + angle);
   transform.setRotation(rotate);
   body->setWorldTransform(transform);*/
-  btTransform tr;
-  tr.setIdentity();
+  //btTransform tr;
+  //tr.setIdentity();
   btQuaternion quat;
   quat.setEuler(angle,0,0); //or quat.setEulerZYX depending on the ordering you want
-  tr.setRotation(quat);
+  //tr.setRotation(quat);
   btTransform transform = body->getCenterOfMassTransform();
   transform.setRotation(transform.getRotation() * quat);
   //tr.setBasis(transform.getBasis());
@@ -140,6 +141,6 @@ void Physics::applyForce(int index, btScalar x, btScalar y, btScalar z) {
 
 void Physics::stop(int index) {
   //std::cout << "stopped" << std::endl;
-  btRigidBody* body = gameBodies.at(index)->getBody();
+  //btRigidBody* body = gameBodies.at(index)->getBody();
   //body->setLinearVelocity(btVector3(0, 0, 0));
 }

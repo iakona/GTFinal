@@ -7,15 +7,15 @@ class MotionState;
 
 class PhysicsBody {
   public:
-    PhysicsBody(btRigidBody* rigidBody, MotionState* ms);
+    PhysicsBody(btRigidBody* rigidBody, btMotionState* ms);
     virtual ~PhysicsBody(void);
     btRigidBody* getBody();
     btRigidBody* setBody(btRigidBody* rigidBody);
-    btRigidBody* setMotion(MotionState* motionState);
+    btRigidBody* setMotion(btMotionState* motionState);
     
   private:
     btRigidBody* body;
-    MotionState* ms;
+    btMotionState* ms;
 };
 
 #endif // #ifndef __PhysicsBody_h_
