@@ -43,20 +43,28 @@ void MenuState::enter() {
   OgreFramework::getSingletonPtr()->m_pTrayMgr->createButton(OgreBites::TL_CENTER, "EnterBtn", "Start Game", 250);
   OgreFramework::getSingletonPtr()->m_pTrayMgr->createButton(OgreBites::TL_CENTER, "ExitBtn", "Exit to Destop", 250);
   */
+
+  // create an imageset for the title
+  CEGUI::ImagesetManager *im = &(CEGUI::ImagesetManager::getSingleton());
+  CEGUI::NamedXMLResourceManager<CEGUI::Imageset, CEGUI::Imageset_xmlHandler> *castedIm = NULL;
+  castedIm = (CEGUI::NamedXMLResourceManager<CEGUI::Imageset, CEGUI::Imageset_xmlHandler>*) im;
+  castedIm->create( "Title.imageset" );
+
   createScene();
 }
 
 void MenuState::createScene() {
   CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
   CEGUI::Window *window = wmgr.createWindow("DefaultWindow", "CEGUI/MenuWindow");
-  // title label
-  CEGUI::Window *title = wmgr.createWindow("TaharezLook/StaticText", "CEGUI/TitleLabel");
-  // title->setHorizontalAlignment(CEGUI::HA_CENTRE);
-  title->setText("                      Penguin Quest: Rise of the Metabots");
-  //title->setFont("Batang-26.font");
-  title->setSize(CEGUI::UVector2(CEGUI::UDim(0.8, 0), CEGUI::UDim(0.25, 0)));
-  title->setPosition(CEGUI::UVector2(CEGUI::UDim(0.1, 0), CEGUI::UDim(0.05, 0)));
-  window->addChildWindow(title);
+
+  // title logo
+  CEGUI::Window *si = CEGUI::WindowManager::getSingleton().createWindow("TaharezLook/StaticImage", "TitlePng");
+  si->setSize(CEGUI::UVector2(CEGUI::UDim(0.8, 0), CEGUI::UDim(0.25, 0)));
+  si->setPosition(CEGUI::UVector2(CEGUI::UDim(0.1, 0), CEGUI::UDim(0.05, 0)));
+  si->setProperty("Image","set:Title image:full_image");
+  si->setProperty("FrameEnabled", "False");
+  si->setProperty("BackgroundEnabled", "False");
+  window->addChildWindow(si);
 
   // new game button
   CEGUI::Window *new_game = wmgr.createWindow("TaharezLook/Button", "CEGUI/NewGameButton");
