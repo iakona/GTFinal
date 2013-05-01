@@ -1,13 +1,13 @@
-#ifndef MENU_STATE_H
-#define MENU_STATE_H
+#ifndef INSTRUCTION_STATE_H
+#define INSTRUCTION_STATE_H
  
 #include "AppState.h"
 
-class MenuState : public AppState {
+class InstructionState : public AppState {
   public:
-    MenuState();
+    InstructionState();
  
-    DECLARE_APPSTATE_CLASS(MenuState)
+    DECLARE_APPSTATE_CLASS(InstructionState)
  
     void enter();
     void createScene();
@@ -23,13 +23,11 @@ class MenuState : public AppState {
     //void buttonHit(OgreBites::Button* button);
  
     void update(double timeSinceLastFrame);
-    bool start(const CEGUI::EventArgs &e);
-    bool instruction(const CEGUI::EventArgs &e);
-    bool quit(const CEGUI::EventArgs &e);
+    bool backToTitle(const CEGUI::EventArgs &e);
     
   private:
     bool m_bQuit;
-    bool created;
+    // bool created;
 };
  
 #endif

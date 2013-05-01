@@ -68,16 +68,25 @@ void MenuState::createScene() {
   new_game->setPosition(CEGUI::UVector2(CEGUI::UDim(0.25, 0), CEGUI::UDim(0.34, 0)));
   window->addChildWindow(new_game);
 
+  // how to play button
+  CEGUI::Window *instructions = wmgr.createWindow("TaharezLook/Button", "CEGUI/InstructionsButton");
+  instructions->setText("How to Play");
+  instructions->setSize(CEGUI::UVector2(CEGUI::UDim(0.5, 0), CEGUI::UDim(0.15, 0)));
+  instructions->setPosition(CEGUI::UVector2(CEGUI::UDim(0.25, 0), CEGUI::UDim(0.53, 0)));
+  window->addChildWindow(instructions);
+
   // quit button
   CEGUI::Window *quit = wmgr.createWindow("TaharezLook/Button", "CEGUI/QuitButton");
   quit->setText("Exit Game");
   quit->setSize(CEGUI::UVector2(CEGUI::UDim(0.5, 0), CEGUI::UDim(0.15, 0)));
-  quit->setPosition(CEGUI::UVector2(CEGUI::UDim(0.25, 0), CEGUI::UDim(0.53, 0)));
+  quit->setPosition(CEGUI::UVector2(CEGUI::UDim(0.25, 0), CEGUI::UDim(0.72, 0)));
   window->addChildWindow(quit);
+
   CEGUI::System::getSingleton().setGUISheet(window);
 
-  // events
+  // event calls
   new_game->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&MenuState::start, this));
+  instructions->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&MenuState::instruction, this));
   quit->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&MenuState::quit, this));
 }
  
@@ -148,6 +157,11 @@ void MenuState::update(double timeSinceLastFrame) {
 bool MenuState::start(const CEGUI::EventArgs &e) {
   CEGUI::WindowManager::getSingleton().destroyWindow( "CEGUI/MenuWindow" );
   changeAppState(findByName("GameState"));
+}
+
+bool MenuState::instruction(const CEGUI::EventArgs &e) {
+  CEGUI::WindowManager::getSingleton().destroyWindow( "CEGUI/MenuWindow" );
+  changeAppState(findByName("InstructionState"));
 }
 
 bool MenuState::quit(const CEGUI::EventArgs &e) {

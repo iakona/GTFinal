@@ -20,6 +20,7 @@ void PenguinApp::startGame() {
  
   MenuState::create(m_pAppStateManager, "MenuState");
   GameState::create(m_pAppStateManager, "GameState");
+  InstructionState::create(m_pAppStateManager, "InstructionState");
   //PauseState::create(m_pAppStateManager, "PauseState");
  
   m_pAppStateManager->start(m_pAppStateManager->findByName("MenuState"));
