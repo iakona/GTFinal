@@ -36,6 +36,15 @@ void GameState::enter() {
 
   OgreFramework::getSingletonPtr()->m_pViewport->setCamera(m_pCamera);
 
+  // create an imageset for the face portrait
+  CEGUI::ImagesetManager *im = &(CEGUI::ImagesetManager::getSingleton());
+  CEGUI::NamedXMLResourceManager<CEGUI::Imageset, CEGUI::Imageset_xmlHandler> *castedIm = NULL;
+  castedIm = (CEGUI::NamedXMLResourceManager<CEGUI::Imageset, CEGUI::Imageset_xmlHandler>*) im;
+  castedIm->create( "Face.imageset" );
+
+  // hide cursor
+  CEGUI::MouseCursor::getSingleton().hide();
+
   createScene();
 }
 
@@ -48,12 +57,16 @@ void GameState::createScene() {
 
   CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
   CEGUI::Window *gameWindow = wmgr.createWindow("DefaultWindow", "CEGUI/GameGUI");
-  // text for demo
-  CEGUI::Window *demoText = wmgr.createWindow("TaharezLook/StaticText", "CEGUI/Underconstruction");
-  demoText->setText("Hello player, this is just a demo of game concept. We'll add\nphysics and more features in the coming weeks.\nEnjoy the demo!\n \nControls:\n      A or left arrow to move left\n      D or right arrow to move right\n \nPress esc, to go back to title");
-  demoText->setSize(CEGUI::UVector2(CEGUI::UDim(0.5, 0), CEGUI::UDim(0.25, 0)));
-  demoText->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 0), CEGUI::UDim(0.0, 0)));
-  gameWindow->addChildWindow(demoText);
+
+  // penguin portrait
+  CEGUI::Window *face = CEGUI::WindowManager::getSingleton().createWindow("TaharezLook/StaticImage", "FacePng");
+  face->setSize(CEGUI::UVector2(CEGUI::UDim(0.1, 0), CEGUI::UDim(0.13, 0)));
+  face->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 0), CEGUI::UDim(0, 0)));
+  face->setProperty("Image","set:Face image:full_image");
+  face->setProperty("FrameEnabled", "False");
+  face->setProperty("BackgroundEnabled", "False");
+  gameWindow->addChildWindow(face);
+
   CEGUI::System::getSingleton().setGUISheet(gameWindow);
 }
  

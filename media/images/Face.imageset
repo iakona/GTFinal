@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Imageset Name="Face" Imagefile="PenguinFace.png" >
+       <Image Name="face_image" XPos="0" YPos="0"  Width="215" Height="210" />
+</Imageset>
+

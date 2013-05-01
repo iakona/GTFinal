@@ -35,20 +35,15 @@ void MenuState::enter() {
   m_pCamera->setAspectRatio(Real(OgreFramework::getSingletonPtr()->m_pViewport->getActualWidth()) / Real(OgreFramework::getSingletonPtr()->m_pViewport->getActualHeight()));
  
   OgreFramework::getSingletonPtr()->m_pViewport->setCamera(m_pCamera);
- 
-  /*OgreFramework::getSingletonPtr()->m_pTrayMgr->destroyAllWidgets();
-  OgreFramework::getSingletonPtr()->m_pTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
-  OgreFramework::getSingletonPtr()->m_pTrayMgr->showLogo(OgreBites::TL_BOTTOMRIGHT);
-  OgreFramework::getSingletonPtr()->m_pTrayMgr->showCursor();
-  OgreFramework::getSingletonPtr()->m_pTrayMgr->createButton(OgreBites::TL_CENTER, "EnterBtn", "Start Game", 250);
-  OgreFramework::getSingletonPtr()->m_pTrayMgr->createButton(OgreBites::TL_CENTER, "ExitBtn", "Exit to Destop", 250);
-  */
 
   // create an imageset for the title
   CEGUI::ImagesetManager *im = &(CEGUI::ImagesetManager::getSingleton());
   CEGUI::NamedXMLResourceManager<CEGUI::Imageset, CEGUI::Imageset_xmlHandler> *castedIm = NULL;
   castedIm = (CEGUI::NamedXMLResourceManager<CEGUI::Imageset, CEGUI::Imageset_xmlHandler>*) im;
   castedIm->create( "Title.imageset" );
+
+  // show cursor
+  CEGUI::MouseCursor::getSingleton().show();
 
   createScene();
 }
@@ -69,7 +64,6 @@ void MenuState::createScene() {
   // new game button
   CEGUI::Window *new_game = wmgr.createWindow("TaharezLook/Button", "CEGUI/NewGameButton");
   new_game->setText("Start Game");
-  //new_game->setFont("DejaVuSans-10");
   new_game->setSize(CEGUI::UVector2(CEGUI::UDim(0.5, 0), CEGUI::UDim(0.15, 0)));
   new_game->setPosition(CEGUI::UVector2(CEGUI::UDim(0.25, 0), CEGUI::UDim(0.34, 0)));
   window->addChildWindow(new_game);
@@ -77,12 +71,12 @@ void MenuState::createScene() {
   // quit button
   CEGUI::Window *quit = wmgr.createWindow("TaharezLook/Button", "CEGUI/QuitButton");
   quit->setText("Exit Game");
-  //quit->setFont("DejaVuSans-10");
   quit->setSize(CEGUI::UVector2(CEGUI::UDim(0.5, 0), CEGUI::UDim(0.15, 0)));
   quit->setPosition(CEGUI::UVector2(CEGUI::UDim(0.25, 0), CEGUI::UDim(0.53, 0)));
   window->addChildWindow(quit);
   CEGUI::System::getSingleton().setGUISheet(window);
 
+  // events
   new_game->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&MenuState::start, this));
   quit->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&MenuState::quit, this));
 }
