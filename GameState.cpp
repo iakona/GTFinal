@@ -34,6 +34,8 @@ void GameState::enter() {
  
   m_pCamera->setAspectRatio(Real(OgreFramework::getSingletonPtr()->m_pViewport->getActualWidth()) / Real(OgreFramework::getSingletonPtr()->m_pViewport->getActualHeight()));
 
+  limit = 0.0;
+
   OgreFramework::getSingletonPtr()->m_pViewport->setCamera(m_pCamera);
 
   // create an imageset for the face portrait
@@ -107,6 +109,14 @@ bool GameState::keyReleased(const OIS::KeyEvent &keyEventRef) {
 bool GameState::mouseMoved(const OIS::MouseEvent &evt) {
   CEGUI::System &sys = CEGUI::System::getSingleton();
   sys.injectMouseMove(evt.state.X.rel, evt.state.Y.rel);
+
+  physics->rotate(0, Ogre::Degree(-evt.state.X.rel * 0.1).valueRadians());
+  
+  if((evt.state.Y.rel > 0 && limit <= 100) || (evt.state.Y.rel < 0 && limit >= -100)){
+    limit += evt.state.Y.rel;
+      m_pCamera->move(Ogre::Vector3(0.0,evt.state.Y.rel,0.0));
+      m_pCamera->pitch(Ogre::Degree(-evt.state.Y.rel*0.1));
+  }
   // Scroll wheel.
   if (evt.state.Z.rel)
     sys.injectMouseWheelChange(evt.state.Z.rel / 120.0f);
