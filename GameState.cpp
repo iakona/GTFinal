@@ -24,7 +24,7 @@ void GameState::enter() {
   OgreFramework::getSingletonPtr()->m_pLog->logMessage("Entering GameState...");
  
   m_pSceneMgr = OgreFramework::getSingletonPtr()->m_pRoot->createSceneManager(ST_GENERIC, "GameSceneMgr");
-  m_pSceneMgr->setAmbientLight(Ogre::ColourValue(0.3f, 0.6f, 0.8f));
+  m_pSceneMgr->setAmbientLight(Ogre::ColourValue(0.4f, 0.4f, 0.4f));
   m_pSceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
  
   m_pCamera = m_pSceneMgr->createCamera("GameCam");
@@ -54,6 +54,8 @@ void GameState::createScene() {
   graphics->setPhysics(physics);
   physics->initialize();
   PenguinNode = m_pSceneMgr->getSceneNode("penguin");
+
+  m_pSceneMgr->setSkyDome(true, "Examples/CloudySky", 5, 8);
 
   CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
   CEGUI::Window *gameWindow = wmgr.createWindow("DefaultWindow", "CEGUI/GameGUI");

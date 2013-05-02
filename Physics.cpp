@@ -22,9 +22,12 @@ void Physics::step(void) {
 void Physics::initialize(void) {
   addPenguin("penguin");
   addGround("ground", 0, 0, 0, 1500, 0, 1500);
-  addWall("wall0", 0, 40, 250, 0, 40, 40, 40);
-  addWall("wall1", 0, 120, 330, 0, 40, 40, 40);
-  addWall("wall2", 0, 120, 690, 0, 40, 40, 40);
+  addWall("wall0", 0, 440, 0, 0, 80, 40, 120);   // start
+  addWall("wall1", 0, 520, 160, 0, 80, 40, 40);  // stairs 1
+  addWall("wall2", 0, 600, 240, 0, 80, 40, 40);
+  addWall("wall3", 0, 680, 320, 0, 80, 40, 80);
+  addWall("wall4", 0, 680, 1040, 0, 240, 40, 240);  // platform 1
+  addWall("wall5", -480, 600, 1120, 0, 40, 40, 80);  // stairs right of platform, this is a small jumping puzzle leading to the first room
 }
 
 void Physics::addGameObject(PhysicsBody* obj, int type, std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w) {
@@ -35,7 +38,7 @@ void Physics::addGameObject(PhysicsBody* obj, int type, std::string name, btScal
 }
 
 void Physics::addPenguin(std::string name) {
-  MotionState* motionState = new MotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,25,0)), graphics, name);
+  MotionState* motionState = new MotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,505,0)), graphics, name);
 
 //   btCollisionShape* shape = new btBoxShape(btVector3(61.7703 / 2, 47.0496 / 2, 48.3053 / 2));
   btCollisionShape* shape = new btBoxShape(btVector3(30, 25, 25));
