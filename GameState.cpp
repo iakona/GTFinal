@@ -112,7 +112,7 @@ bool GameState::mouseMoved(const OIS::MouseEvent &evt) {
 
   physics->rotate(0, Ogre::Degree(-evt.state.X.rel * 0.1).valueRadians());
   
-  if((evt.state.Y.rel > 0 && limit <= 100) || (evt.state.Y.rel < 0 && limit >= -100)){
+  if((evt.state.Y.rel > 0 && limit <= 180) || (evt.state.Y.rel < 0 && limit >= -30)){
     limit += evt.state.Y.rel;
       m_pCamera->move(Ogre::Vector3(0.0,evt.state.Y.rel,0.0));
       m_pCamera->pitch(Ogre::Degree(-evt.state.Y.rel*0.1));

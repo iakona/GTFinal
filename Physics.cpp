@@ -25,9 +25,18 @@ void Physics::initialize(void) {
   addWall("wall0", 0, 440, 0, 0, 80, 40, 120);   // start
   addWall("wall1", 0, 520, 160, 0, 80, 40, 40);  // stairs 1
   addWall("wall2", 0, 600, 240, 0, 80, 40, 40);
-  addWall("wall3", 0, 680, 320, 0, 80, 40, 80);
-  addWall("wall4", 0, 680, 1040, 0, 240, 40, 240);  // platform 1
-  addWall("wall5", -480, 600, 1120, 0, 40, 40, 80);  // stairs right of platform, this is a small jumping puzzle leading to the first room
+  addWall("wall3", 0, 680, 360, 0, 80, 40, 80);
+  addWall("wall4", 0, 680, 1080, 0, 240, 40, 240);  // platform 1
+  addWall("wall5", -520, 600, 1160, 0, 40, 40, 80);  // stairs right of platform, this is a small jumping puzzle leading to the first room
+  addWall("wall6", -760, 400, 1640, 0, 40, 80, 40);
+  addWall("wall7", -1080, 480, 2000, 0, 80, 20, 80);
+  addWall("wall8", -920, 560, 2160, 0, 20, 20, 120);
+  addWall("wall9", -800, 640, 2280, 0, 40, 30, 40);
+  addWall("wall10", -880, 720, 1880, 0, 40, 20, 80);
+  addWall("wall11", -880, 780, 1760, 0, 40, 40, 40);
+  addWall("wall12", -720, 880, 2200, 45, 80, 20, 320); // end of jump puzzle 1
+  addWall("wall13", -200, 720, 2840, 0, 120, 20, 120); // Cube structure wall13 ... wall??
+  addWall("wall14", 100, 340, 2680, 0, 800, 400, 40);
 }
 
 void Physics::addGameObject(PhysicsBody* obj, int type, std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w) {
