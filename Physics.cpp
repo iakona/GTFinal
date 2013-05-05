@@ -35,8 +35,19 @@ void Physics::initialize(void) {
   addWall("wall10", -880, 720, 1880, 0, 40, 20, 80);
   addWall("wall11", -880, 780, 1760, 0, 40, 40, 40);
   addWall("wall12", -720, 880, 2200, 45, 80, 20, 320); // end of jump puzzle 1
-  addWall("wall13", -200, 720, 2840, 0, 120, 20, 120); // Cube structure wall13 ... wall??
-  addWall("wall14", 100, 340, 2680, 0, 800, 400, 40);
+  addWall("wall12_2", -230, 940, 2200, 0, 15, 10, 40);
+  addWall("wall12_3", -170, 1020, 2140, 0, 15, 10, 40);
+  addWall("wall12_4", -110, 1090, 2080, 0, 15, 10, 40);
+  addWall("wall12_5", -50, 1160, 2210, 0, 15, 10, 40);
+  addWall("wall12_6", -10, 900, 1880, 0, 15, 10, 40);
+  addWall("wall12_7", -40, 750, 1480, 0, 50, 5, 50);
+  addWall("wall12_8", 30, 1250, 2280, 0, 32, 20, 25);
+  addWall("wall12_9", 60, 1450, 2500, 0, 80, 20, 50);
+  addWall("wall13", -160, 715, 3240, 0, 120, 10, 120); // platform on other side of wall
+  addWall("wall14", 96, 390, 2690, 0, 804, 400, 50);   // Big Wall Bottom
+  addWall("wall15", 100, 1190, 2680, 0, 800, 400, 40); // Big Wall Top
+  addWall("wall16", -60, 795, 3640, 0, 100, 10, 100); // End?
+
 }
 
 void Physics::addGameObject(PhysicsBody* obj, int type, std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w) {
@@ -48,7 +59,7 @@ void Physics::addGameObject(PhysicsBody* obj, int type, std::string name, btScal
 
 void Physics::addPenguin(std::string name) {
   MotionState* motionState = new MotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,505,0)), graphics, name);
-
+  //MotionState* motionState = new MotionState(btTransform(btQuaternion(0,0,0,1),btVector3(-720,945,2200)), graphics, name);
 //   btCollisionShape* shape = new btBoxShape(btVector3(61.7703 / 2, 47.0496 / 2, 48.3053 / 2));
   btCollisionShape* shape = new btBoxShape(btVector3(30, 25, 25));
   //btCollisionShape* shape = new btSphereShape(2);
