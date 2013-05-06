@@ -5,6 +5,7 @@
 #include "Penguin.h"
 #include "Terrain.h"
 #include "Wall.h"
+#include "Goal.h"
 
 class Graphics;
 class PhysicsBody;
@@ -19,6 +20,7 @@ class Physics {
     void addPenguin(std::string name);
     void addGround(std::string name, btScalar x, btScalar y, btScalar z, btScalar l, btScalar h, btScalar w);
     void addWall(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w);
+    void addGoal(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle);
     void translate(int index, btScalar x, btScalar y, btScalar z);
     void rotate(int index, btScalar angle);
     void applyForce(int index, btScalar x, btScalar y, btScalar z);

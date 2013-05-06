@@ -21,6 +21,7 @@ void Physics::step(void) {
 
 void Physics::initialize(void) {
   addPenguin("penguin");
+  addGoal("goal", -60, 845, 3640, 0);
   addGround("ground", 0, 0, 0, 1500, 0, 1500);
   addWall("wall0", 0, 440, 0, 0, 80, 40, 120);   // start
   addWall("wall1", 0, 520, 160, 0, 80, 40, 40);  // stairs 1
@@ -47,7 +48,6 @@ void Physics::initialize(void) {
   addWall("wall14", 96, 390, 2690, 0, 804, 400, 50);   // Big Wall Bottom
   addWall("wall15", 100, 1190, 2680, 0, 800, 400, 40); // Big Wall Top
   addWall("wall16", -60, 795, 3640, 0, 100, 10, 100); // End?
-
 }
 
 void Physics::addGameObject(PhysicsBody* obj, int type, std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w) {
@@ -123,6 +123,28 @@ void Physics::addWall(std::string name, btScalar x, btScalar y, btScalar z, btSc
 
   PhysicsBody* physicsBody = new PhysicsBody(body, motionState);
   addGameObject(physicsBody, 2, name, x, y, z, angle, l, h, w);
+}
+
+void Physics::addGoal(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle) {
+  btCollisionShape* shape = new btBoxShape(btVector3(50,50,50));
+
+  btScalar mass = 0;
+  btVector3 intertia(0,0,0);
+  shape->calculateLocalInertia(mass,intertia);
+
+  MotionState* motionState = new MotionState(btTransform(btQuaternion(angle, 0, 0),btVector3(x, y, z)), graphics, name);
+
+  btRigidBody::btRigidBodyConstructionInfo info(mass,motionState,shape,intertia);
+  btRigidBody* body = new btRigidBody(info);
+  body->setRestitution(.85);
+  //body->setRestitution(0);
+  body->setLinearVelocity(btVector3(0,0,0));
+  body->setFriction(1);
+  body->setDamping(0,.2);
+  body->setActivationState(DISABLE_DEACTIVATION);
+
+  PhysicsBody* physicsBody = new PhysicsBody(body, motionState);
+  addGameObject(physicsBody, 3, name, x, y, z, angle, 50, 50, 50);
 }
 
 void Physics::translate(int index, btScalar x, btScalar y, btScalar z) {
