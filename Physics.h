@@ -5,6 +5,7 @@
 #include "Penguin.h"
 #include "KillBox.h"
 #include "Wall.h"
+#include "Goal.h"
 
 class Graphics;
 class PhysicsBody;
@@ -20,6 +21,7 @@ class Physics {
     void addPenguin(std::string name);
     void addWall(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w);
     void addKillBox(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w);
+    void addGoal(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle);
     void translate(int index, btScalar x, btScalar y, btScalar z);
     void rotate(int index, btScalar angle);
     void applyForce(int index, btScalar x, btScalar y, btScalar z);
