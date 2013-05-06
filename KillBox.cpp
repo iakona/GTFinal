@@ -9,7 +9,7 @@ KillBox::KillBox(Ogre::SceneManager* sceneMgr, std::string name,
   sceneNode->scale((l/50),(h/50),(w/50));
   sceneNode->yaw(angle);
   sceneNode->translate(x, y, z);
-  entity->setMaterialName("Examples/Frost");
+  entity->setMaterialName("Examples/Frosty");
 
   setNode(sceneNode);
 }

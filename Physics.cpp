@@ -45,6 +45,7 @@ void Physics::step(void) {
         resetObject(object);
       } else if (obA_proxy->m_collisionFilterGroup == COL_PENGUIN && obB_proxy->m_collisionFilterGroup == COL_GOAL) {
         std::cout << "YOU WIN!!!!" << std::endl;
+        nextStage();
         graphics->playSound(2);
       } else if (obA_proxy->m_collisionFilterGroup == COL_PENGUIN && obB_proxy->m_collisionFilterGroup == COL_CHECKPOINT) {
         checkpoint = obB->getWorldTransform().getOrigin();
@@ -93,7 +94,7 @@ void Physics::nextStage(void) {
 }
 
 void Physics::addStage0(void) {
-  addKillBox("killBox0", 0, 0, 0, 0, 4000, 0, 4000);
+  addKillBox("killBox0", 0, 0, 0, 0, 8000, 0, 8000);
   addGoal("goal", -60, 845, 3640, 0);
   addWall("wall0", 0, 440, 0, 0, 80, 40, 120);   // start
   addWall("wall1", 0, 520, 160, 0, 80, 40, 40);  // stairs 1
@@ -123,12 +124,22 @@ void Physics::addStage0(void) {
 }
 
 void Physics::addStage1(void) {
+  addKillBox("killBox0", 0, 0, 0, 0, 8000, 0, 8000);
   addGoal("goal", -60, 885, 3640, 0);
-  addKillBox("killBox", 0, 0, 0, 0, 4000, 0, 4000);
   addWall("wall0", 0, 140, 0, 0, 80, 40, 120);   // start
   addWall("wall1", 0, 120, 160, 0, 80, 40, 40);  // stairs 1
   addWall("wall2", 0, 200, 240, 0, 80, 40, 40);
   addWall("wall3", 0, 280, 360, 0, 80, 40, 80);
+  movePenguin(btVector3(0, 205, 0));
+}
+
+void Physics::movePenguin(btVector3 location) {
+  btRigidBody* body = gameBodies.at(0)->getBody();
+  body->setLinearVelocity(btVector3(0,0,0));
+  body->setAngularVelocity(btVector3(0,0,0));
+  btVector3 translate = body->getCenterOfMassPosition();
+  body->translate(-translate);
+  body->translate(location);
 }
 
 void Physics::addGameObject(PhysicsBody* obj, int type, std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w, bool checkpoint) {
