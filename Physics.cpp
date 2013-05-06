@@ -44,11 +44,13 @@ void Physics::step(void) {
         resetObject(object);
       } else if (obA_proxy->m_collisionFilterGroup == COL_PENGUIN && obB_proxy->m_collisionFilterGroup == COL_GOAL) {
         std::cout << "YOU WIN!!!!" << std::endl;
+        graphics->playSound(2);
       } else if (obA_proxy->m_collisionFilterGroup == COL_PENGUIN && obB_proxy->m_collisionFilterGroup == COL_CHECKPOINT) {
         checkpoint = obB->getWorldTransform().getOrigin();
         btBoxShape* shape = reinterpret_cast<btBoxShape*>(obB->getCollisionShape());
         checkpoint += btVector3(0, shape->getHalfExtentsWithoutMargin().y(), 0);
         checkpoint += btVector3(0, 25, 0);
+        graphics->playSound(1);
       }
     }
   }
@@ -66,6 +68,7 @@ void Physics::resetObject(PhysicsBody* object) {
 }
 
 void Physics::initialize(void) {
+  graphics->loadSounds();
   addPenguin("penguin");
   addKillBox("killBox0", 0, 0, 0, 0, 4000, 0, 4000);
   addGoal("goal", -60, 845, 3640, 0);
@@ -244,6 +247,7 @@ void Physics::rotate(int index, btScalar angle) {
 void Physics::applyForce(int index, btScalar x, btScalar y, btScalar z) {
   btRigidBody* body = gameBodies.at(index)->getBody();
   body->applyCentralForce(btVector3(x, y, z));
+  graphics->playSound(0);
 }
 
 void Physics::stop(int index) {

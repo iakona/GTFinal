@@ -3,9 +3,34 @@
 Graphics::Graphics(Ogre::SceneManager* mSceneMgr) {
   sceneMgr = mSceneMgr;
   jumping = false;
+  if(SDL_Init(SDL_INIT_TIMER | SDL_INIT_AUDIO) < 0){
+   std::cout << "Unable to init SDL: " << SDL_GetError() << std::endl;
+  }     
+  soundMgr = SoundManager::getInstance();
 }
 
 Graphics::~Graphics(void) {
+}
+
+void Graphics::loadSounds(void) {
+  golfPutt = new Sound("media/sounds/golf_putt.wav");
+  wallHit = new Sound("media/sounds/golf_hit_metal.wav");
+  inTheHole = new Sound("media/sounds/ball_in_hole.wav");
+}
+
+/** num:
+* 0 = golfPutt
+* 1 = wallHit
+* 2 = inTheHole
+*/
+void Graphics::playSound(int num) {
+  if (num == 0) {
+    soundMgr->playSound(golfPutt);
+  } else if (num == 1) {
+    soundMgr->playSound(wallHit);
+  } else if (num == 2) {
+    soundMgr->playSound(inTheHole);
+  }
 }
 
 void Graphics::setObjectPosition(std::string name, Ogre::Real x, Ogre::Real y, Ogre::Real z) {
