@@ -17,9 +17,9 @@ class Physics {
     void step(void);
     void resetObject(PhysicsBody* object);
     void initialize(void);
-    void addGameObject(PhysicsBody* obj, int type, std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w);
+    void addGameObject(PhysicsBody* obj, int type, std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w, bool checkpoint = false);
     void addPenguin(std::string name);
-    void addWall(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w);
+    void addWall(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w, bool checkpoint = false);
     void addKillBox(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w);
     void addGoal(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle);
     void translate(int index, btScalar x, btScalar y, btScalar z);

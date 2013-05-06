@@ -8,7 +8,8 @@ enum collisiontypes {
     COL_PENGUIN = BIT(0), //<Collide with penguins
     COL_WALL = BIT(1), //<Collide with walls
     COL_KILLBOX = BIT(2), //<Collide with killboxes
-    COL_GOAL = BIT(3) //<Collide with goal
+    COL_GOAL = BIT(3), //<Collide with goal
+    COL_CHECKPOINT = BIT(4) //<Collid with checkpoint
 };
 
 Physics::Physics(Graphics* graphic) {
@@ -36,12 +37,17 @@ void Physics::step(void) {
     btBroadphaseProxy* obA_proxy = obA->getBroadphaseHandle();
     btBroadphaseProxy* obB_proxy = obB->getBroadphaseHandle();
     if (obA_proxy->m_collisionFilterGroup & obB_proxy->m_collisionFilterMask) {
-      std::cout << obA_proxy->m_collisionFilterGroup << " " << obB_proxy->m_collisionFilterGroup << std::endl;
+      //std::cout << obA_proxy->m_collisionFilterGroup << " " << obB_proxy->m_collisionFilterGroup << std::endl;
       if (obA_proxy->m_collisionFilterGroup == COL_PENGUIN && obB_proxy->m_collisionFilterGroup == COL_KILLBOX) {
         PhysicsBody* object = reinterpret_cast<PhysicsBody*>(obA->getUserPointer());
         resetObject(object);
       } else if (obA_proxy->m_collisionFilterGroup == COL_PENGUIN && obB_proxy->m_collisionFilterGroup == COL_GOAL) {
         std::cout << "YOU WIN!!!!" << std::endl;
+      } else if (obA_proxy->m_collisionFilterGroup == COL_PENGUIN && obB_proxy->m_collisionFilterGroup == COL_CHECKPOINT) {
+        checkpoint = obB->getWorldTransform().getOrigin();
+        btBoxShape* shape = reinterpret_cast<btBoxShape*>(obB->getCollisionShape());
+        checkpoint += btVector3(0, shape->getHalfExtentsWithoutMargin().y(), 0);
+        checkpoint += btVector3(0, 25, 0);
       }
     }
   }
@@ -72,7 +78,7 @@ void Physics::initialize(void) {
   addWall("wall9", -800, 640, 2280, 0, 40, 30, 40);
   addWall("wall10", -880, 720, 1880, 0, 40, 20, 80);
   addWall("wall11", -880, 780, 1760, 0, 40, 40, 40);
-  addWall("wall12", -720, 880, 2200, 45, 80, 20, 320); // end of jump puzzle 1
+  addWall("wall12", -720, 880, 2200, 45, 80, 20, 320, true); // end of jump puzzle 1
   addWall("wall12_2", -230, 940, 2200, 0, 15, 10, 40);
   addWall("wall12_3", -170, 1020, 2140, 0, 15, 10, 40);
   addWall("wall12_4", -110, 1090, 2080, 0, 15, 10, 40);
@@ -87,16 +93,19 @@ void Physics::initialize(void) {
   addWall("wall16", -60, 795, 3640, 0, 100, 10, 100); // End?
 }
 
-void Physics::addGameObject(PhysicsBody* obj, int type, std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w) {
+void Physics::addGameObject(PhysicsBody* obj, int type, std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w, bool checkpoint) {
   gameBodies.push_back(obj);
-  int penguinCollidesWith = COL_WALL | COL_KILLBOX | COL_GOAL;
+  int penguinCollidesWith = COL_WALL | COL_KILLBOX | COL_GOAL | COL_CHECKPOINT;
   int wallCollidesWith = COL_PENGUIN;
   int killboxCollidesWith = COL_PENGUIN;
   int goalCollidesWith = COL_PENGUIN;
+  int checkpointCollidesWith = COL_PENGUIN;
   if (type == 0)
     dynamicWorld->addRigidBody(obj->getBody(), COL_PENGUIN, penguinCollidesWith);
-  else if (type == 1)
+  else if (type == 1 && !checkpoint)
     dynamicWorld->addRigidBody(obj->getBody(), COL_WALL, wallCollidesWith);
+  else if (type == 1 && checkpoint)
+    dynamicWorld->addRigidBody(obj->getBody(), COL_CHECKPOINT, checkpointCollidesWith);
   else if (type == 2)
     dynamicWorld->addRigidBody(obj->getBody(), COL_KILLBOX, killboxCollidesWith);
   else if (type == 3)
@@ -131,7 +140,7 @@ void Physics::addPenguin(std::string name) {
   checkpoint = btVector3(0, 505, 0);
 }
 
-void Physics::addWall(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w) {
+void Physics::addWall(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w, bool checkpoint) {
   btCollisionShape* shape = new btBoxShape(btVector3(l,h,w));
 
   btScalar mass = 0;
@@ -150,7 +159,7 @@ void Physics::addWall(std::string name, btScalar x, btScalar y, btScalar z, btSc
   body->setActivationState(DISABLE_DEACTIVATION);
 
   PhysicsBody* physicsBody = new PhysicsBody(body, motionState);
-  addGameObject(physicsBody, 1, name, x, y, z, angle, l, h, w);
+  addGameObject(physicsBody, 1, name, x, y, z, angle, l, h, w, checkpoint);
 }
 
 void Physics::addKillBox(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w) {
