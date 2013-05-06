@@ -31,6 +31,7 @@ class Physics {
     void rotate(int index, btScalar angle);
     void applyForce(int index, btScalar x, btScalar y, btScalar z);
     void stop(int index);
+    int getLives() { return lives; };
     bool gameOver();
 
   private:
@@ -42,6 +43,7 @@ class Physics {
     btAlignedObjectArray<PhysicsBody*> gameBodies;
     Graphics* graphics;
     int stageNumber;
+    int lives;
 };
 
 #endif // #ifndef __Physics_h_

@@ -2,6 +2,9 @@
  
 using namespace Ogre;
 
+CEGUI::Window *face;
+CEGUI::Window *life;
+
 CEGUI::MouseButton convertButton2(OIS::MouseButtonID buttonID) {
   switch (buttonID) {
     case OIS::MB_Left:
@@ -63,7 +66,7 @@ void GameState::createScene() {
   CEGUI::Window *gameWindow = wmgr.createWindow("DefaultWindow", "CEGUI/GameGUI");
 
   // penguin portrait
-  CEGUI::Window *face = CEGUI::WindowManager::getSingleton().createWindow("TaharezLook/StaticImage", "FacePng");
+  face = CEGUI::WindowManager::getSingleton().createWindow("TaharezLook/StaticImage", "FacePng");
   face->setSize(CEGUI::UVector2(CEGUI::UDim(0.1, 0), CEGUI::UDim(0.13, 0)));
   face->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 0), CEGUI::UDim(0, 0)));
   face->setProperty("Image","set:Face image:full_image");
@@ -71,9 +74,27 @@ void GameState::createScene() {
   face->setProperty("BackgroundEnabled", "False");
   gameWindow->addChildWindow(face);
 
+  // life
+  life = wmgr.createWindow("TaharezLook/StaticText", "CEGUI/Life");
+  stringstream s;
+  s << physics->getLives();
+  life->setText("x"+s.str());
+  life->setSize(CEGUI::UVector2(CEGUI::UDim(0.04, 0), CEGUI::UDim(0.05, 0)));
+  life->setPosition(CEGUI::UVector2(CEGUI::UDim(0.08, 0), CEGUI::UDim(0.048, 0)));
+  life->setProperty("FrameEnabled", "False");
+  life->setProperty("BackgroundEnabled", "False");
+  // life->setProperty("Font", "Jura-18");
+  gameWindow->addChildWindow(life);
+
   CEGUI::System::getSingleton().setGUISheet(gameWindow);
 }
  
+void GameState::UpdateGUI() {
+  stringstream s;
+  s << physics->getLives();
+  life->setProperty("Text", "x"+s.str());
+}
+
 void GameState::exit() {
   OgreFramework::getSingletonPtr()->m_pLog->logMessage("Leaving GameState...");
  
@@ -146,6 +167,7 @@ void GameState::update(double timeSinceLastFrame) {
     shutdown();
     return;
   }
+  UpdateGUI();
   if (physics->gameOver()) {
     CEGUI::WindowManager::getSingleton().destroyWindow( "CEGUI/GameGUI" );
     popAllAndPushAppState(findByName("MenuState"));

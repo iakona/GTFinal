@@ -22,7 +22,7 @@ class GameState : public AppState {
     bool mouseReleased(const OIS::MouseEvent &evt, OIS::MouseButtonID id);
 
     //void buttonHit(OgreBites::Button* button);
-
+    void UpdateGUI(void);
     void update(double timeSinceLastFrame);
     void getInput();
 

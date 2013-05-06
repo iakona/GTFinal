@@ -1,7 +1,6 @@
 #include "Physics.h"
 
 btVector3 checkpoint;
-int lives;
 
 #define BIT(x) (1<<(x))
 enum collisiontypes {
@@ -23,6 +22,7 @@ Physics::Physics(Graphics* graphic) {
   dynamicWorld->getSolverInfo().m_splitImpulse = true;
   graphics = graphic;
   stageNumber = 0;
+  lives = 3;
 }
 
 Physics::~Physics(void) {
@@ -187,7 +187,6 @@ void Physics::addPenguin(std::string name) {
   PhysicsBody* physicsBody = new PhysicsBody(body, motionState);
   addGameObject(physicsBody, 0, name, 0, 0, 0, 0, 0, 0, 0);
   checkpoint = btVector3(0, 505, 0);
-  lives = 3;
 }
 
 void Physics::addWall(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w, bool checkpoint) {
