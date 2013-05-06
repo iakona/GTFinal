@@ -146,6 +146,10 @@ void GameState::update(double timeSinceLastFrame) {
     shutdown();
     return;
   }
+  if (physics->gameOver()) {
+    CEGUI::WindowManager::getSingleton().destroyWindow( "CEGUI/GameGUI" );
+    popAllAndPushAppState(findByName("MenuState"));
+  }
 }
 
 void GameState::getInput() {
