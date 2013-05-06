@@ -61,6 +61,12 @@ void Graphics::addGameObject(int type, std::string name, Ogre::Real x, Ogre::Rea
   gameObjects.push_back(obj);
 }
 
+void Graphics::removeObject(int pos) {
+  GraphicsBody* obj = gameObjects.at(pos);
+  gameObjects.erase(gameObjects.begin() + pos);
+  delete obj;
+}
+
 void Graphics::setJumping(bool jump) {
  jumping = jump; 
 }

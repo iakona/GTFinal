@@ -184,6 +184,7 @@ void GameState::getInput() {
     physics->translate(0, -5.0f * dir[2], 0.0f, 5.0f * dir[0]);
     //moving = true;
   }
+
   if (keyboard->isKeyDown(OIS::KC_SPACE)) {
     //std::cout << "jump" << std::endl;
     if(!graphics->getJumping()){
