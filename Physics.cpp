@@ -1,6 +1,7 @@
 #include "Physics.h"
 
 btVector3 checkpoint;
+int lives;
 
 #define BIT(x) (1<<(x))
 enum collisiontypes {
@@ -61,6 +62,8 @@ void Physics::resetObject(PhysicsBody* object) {
   btVector3 translate = body->getCenterOfMassPosition();
   body->translate(-translate);
   body->translate(checkpoint);
+  --lives;
+  std::cout << "Lives Remaining: " << lives << std::endl;
 }
 
 void Physics::initialize(void) {
@@ -170,6 +173,7 @@ void Physics::addPenguin(std::string name) {
   PhysicsBody* physicsBody = new PhysicsBody(body, motionState);
   addGameObject(physicsBody, 0, name, 0, 0, 0, 0, 0, 0, 0);
   checkpoint = btVector3(0, 505, 0);
+  lives = 3;
 }
 
 void Physics::addWall(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w, bool checkpoint) {
@@ -289,4 +293,8 @@ void Physics::stop(int index) {
   //std::cout << "stopped" << std::endl;
   //btRigidBody* body = gameBodies.at(index)->getBody();
   //body->setLinearVelocity(btVector3(0, 0, 0));
+}
+
+bool Physics::gameOver() {
+  return lives <= 0;
 }
