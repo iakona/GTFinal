@@ -17,11 +17,15 @@ class Physics {
     void step(void);
     void resetObject(PhysicsBody* object);
     void initialize(void);
+    void nextStage(void);
+    void addStage0(void);
+    void addStage1(void);
     void addGameObject(PhysicsBody* obj, int type, std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w, bool checkpoint = false);
     void addPenguin(std::string name);
     void addWall(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w, bool checkpoint = false);
     void addKillBox(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w);
     void addGoal(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle);
+    void removeStage(void);
     void translate(int index, btScalar x, btScalar y, btScalar z);
     void rotate(int index, btScalar angle);
     void applyForce(int index, btScalar x, btScalar y, btScalar z);
@@ -35,6 +39,7 @@ class Physics {
     btDiscreteDynamicsWorld* dynamicWorld;
     btAlignedObjectArray<PhysicsBody*> gameBodies;
     Graphics* graphics;
+    int stageNumber;
 };
 
 #endif // #ifndef __Physics_h_
