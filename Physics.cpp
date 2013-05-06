@@ -1,5 +1,15 @@
 #include "Physics.h"
 
+btVector3 checkpoint;
+
+#define BIT(x) (1<<(x))
+enum collisiontypes {
+    COL_NOTHING = 0, //<Collide with nothing
+    COL_PENGUIN = BIT(0), //<Collide with penguins
+    COL_WALL = BIT(1), //<Collide with walls
+    COL_KILLBOX = BIT(2) //<Collide with killboxes
+};
+
 Physics::Physics(Graphics* graphic) {
   collisionConfiguration = new btDefaultCollisionConfiguration();
   dispatcher = new btCollisionDispatcher(collisionConfiguration);
@@ -17,11 +27,39 @@ Physics::~Physics(void) {
 
 void Physics::step(void) {
   dynamicWorld->stepSimulation(1.f/60.f);
+  int numManifolds = dynamicWorld->getDispatcher()->getNumManifolds();
+  for (int i = 0; i < numManifolds; i++) {
+    btPersistentManifold* contactManifold =  dynamicWorld->getDispatcher()->getManifoldByIndexInternal(i);
+    btCollisionObject* obA = static_cast<btCollisionObject*>(contactManifold->getBody0());
+    btCollisionObject* obB = static_cast<btCollisionObject*>(contactManifold->getBody1());
+    btBroadphaseProxy* obA_proxy = obA->getBroadphaseHandle();
+    btBroadphaseProxy* obB_proxy = obB->getBroadphaseHandle();
+    if (obA_proxy->m_collisionFilterGroup & obB_proxy->m_collisionFilterMask) {
+      std::cout << obA_proxy->m_collisionFilterGroup << " " << obB_proxy->m_collisionFilterGroup << std::endl;
+      if (obA_proxy->m_collisionFilterGroup == COL_PENGUIN && obB_proxy->m_collisionFilterGroup == COL_KILLBOX) {
+        PhysicsBody* object = reinterpret_cast<PhysicsBody*>(obA->getUserPointer());
+        resetObject(object);
+      }
+    }
+//     if (obB->getCollisionFlags() & (btCollisionObject::CF_NO_CONTACT_RESPONSE | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK)) {
+//       PhysicsBody* object = reinterpret_cast<PhysicsBody*>(obA->getUserPointer());
+//       resetObject(object);
+//     }
+  }
+}
+
+void Physics::resetObject(PhysicsBody* object) {
+  btRigidBody* body = object->getBody();
+  body->setLinearVelocity(btVector3(0,0,0));
+  body->setAngularVelocity(btVector3(0,0,0));
+  btVector3 translate = body->getCenterOfMassPosition();
+  body->translate(-translate);
+  body->translate(checkpoint);
 }
 
 void Physics::initialize(void) {
   addPenguin("penguin");
-  addGround("ground", 0, 0, 0, 1500, 0, 1500);
+  addKillBox("killBox0", 0, 0, 0, 0, 4000, 0, 4000);
   addWall("wall0", 0, 440, 0, 0, 80, 40, 120);   // start
   addWall("wall1", 0, 520, 160, 0, 80, 40, 40);  // stairs 1
   addWall("wall2", 0, 600, 240, 0, 80, 40, 40);
@@ -52,8 +90,16 @@ void Physics::initialize(void) {
 
 void Physics::addGameObject(PhysicsBody* obj, int type, std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w) {
   gameBodies.push_back(obj);
-  dynamicWorld->addRigidBody(obj->getBody());
-  //obj->getBody()->setUserPointer(gameBodies[gameBodies.size()-1]);
+  int penguinCollidesWith = COL_WALL | COL_KILLBOX;
+  int wallCollidesWith = COL_PENGUIN;
+  int killboxCollidesWith = COL_PENGUIN;
+  if (type == 0)
+    dynamicWorld->addRigidBody(obj->getBody(), COL_PENGUIN, penguinCollidesWith);
+  else if (type == 1)
+    dynamicWorld->addRigidBody(obj->getBody(), COL_WALL, wallCollidesWith);
+  else if (type == 2)
+    dynamicWorld->addRigidBody(obj->getBody(), COL_KILLBOX, killboxCollidesWith);
+  obj->getBody()->setUserPointer(gameBodies[gameBodies.size()-1]);
   graphics->addGameObject(type, name, x, y, z, angle, l, h, w);
 }
 
@@ -80,27 +126,7 @@ void Physics::addPenguin(std::string name) {
 
   PhysicsBody* physicsBody = new PhysicsBody(body, motionState);
   addGameObject(physicsBody, 0, name, 0, 0, 0, 0, 0, 0, 0);
-}
-
-void Physics::addGround(std::string name, btScalar x, btScalar y, btScalar z, btScalar l, btScalar h, btScalar w) {
-  btCollisionShape* shape = new btStaticPlaneShape(btVector3(0,1,0),1);
-
-  btScalar mass(0.);
-  btVector3 inertia(0,0,0);
-  MotionState* motionState = new MotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)), graphics, name);
-  btRigidBody::btRigidBodyConstructionInfo info(mass, motionState, shape, inertia);
-  btRigidBody* body = new btRigidBody(info);
-
-  body->setRestitution(.75);
-  body->setFriction(.5);
-  body->setDamping(.4,.2);
-  //body->setRestitution(0);
-  //body->setFriction(0);
-  //body->setDamping(0,0);
-  body->setActivationState(DISABLE_DEACTIVATION);
-
-  PhysicsBody* physicsBody = new PhysicsBody(body, motionState);
-  addGameObject(physicsBody, 1, name, x, y, z, 0, l, h, w);
+  checkpoint = btVector3(0, 505, 0);
 }
 
 void Physics::addWall(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w) {
@@ -119,6 +145,24 @@ void Physics::addWall(std::string name, btScalar x, btScalar y, btScalar z, btSc
   body->setLinearVelocity(btVector3(0,0,0));
   body->setFriction(1);
   body->setDamping(0,.2);
+  body->setActivationState(DISABLE_DEACTIVATION);
+
+  PhysicsBody* physicsBody = new PhysicsBody(body, motionState);
+  addGameObject(physicsBody, 1, name, x, y, z, angle, l, h, w);
+}
+
+void Physics::addKillBox(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w) {
+  btCollisionShape* shape = new btBoxShape(btVector3(l,h,w));
+
+  btScalar mass = 0;
+  btVector3 intertia(0,0,0);
+  shape->calculateLocalInertia(mass,intertia);
+
+  MotionState* motionState = new MotionState(btTransform(btQuaternion(angle, 0, 0),btVector3(x, y, z)), graphics, name);
+
+  btRigidBody::btRigidBodyConstructionInfo info(mass,motionState,shape,intertia);
+  btRigidBody* body = new btRigidBody(info);
+  //body->setCollisionFlags
   body->setActivationState(DISABLE_DEACTIVATION);
 
   PhysicsBody* physicsBody = new PhysicsBody(body, motionState);

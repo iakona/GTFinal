@@ -3,7 +3,7 @@
 
 #include "PhysicsBody.h"
 #include "Penguin.h"
-#include "Terrain.h"
+#include "KillBox.h"
 #include "Wall.h"
 
 class Graphics;
@@ -14,11 +14,12 @@ class Physics {
     Physics(Graphics*);
     virtual ~Physics(void);
     void step(void);
+    void resetObject(PhysicsBody* object);
     void initialize(void);
     void addGameObject(PhysicsBody* obj, int type, std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w);
     void addPenguin(std::string name);
-    void addGround(std::string name, btScalar x, btScalar y, btScalar z, btScalar l, btScalar h, btScalar w);
     void addWall(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w);
+    void addKillBox(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w);
     void translate(int index, btScalar x, btScalar y, btScalar z);
     void rotate(int index, btScalar angle);
     void applyForce(int index, btScalar x, btScalar y, btScalar z);
