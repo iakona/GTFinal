@@ -17,6 +17,7 @@ Physics::~Physics(void) {
 
 void Physics::step(void) {
   dynamicWorld->stepSimulation(1.f/60.f);
+  graphics->animate();
 }
 
 void Physics::initialize(void) {

@@ -1,4 +1,4 @@
-noinst_HEADERS = AppState.h AdvancedOgreFramework.h AppStateManager.h MenuState.h GameState.h PenguinApp.h GraphicsBody.h Terrain.h Penguin.h Wall.h Graphics.h MotionState.h PhysicsBody.h Physics.h InstructionState.h Goal.h
+noinst_HEADERS = AppState.h AdvancedOgreFramework.h AppStateManager.h MenuState.h GameState.h PenguinApp.h GraphicsBody.h AnimatedGraphicsBody.h Terrain.h Penguin.h Wall.h Graphics.h MotionState.h PhysicsBody.h Physics.h InstructionState.h Goal.h
 
 bin_PROGRAMS = PenguinQuest
 PenguinQuest_CPPFLAGS = -I$(top_srcdir)

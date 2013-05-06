@@ -1,7 +1,7 @@
 #ifndef __Graphics_h_
 #define __Graphics_h_
 
-#include "GraphicsBody.h"
+#include "AnimatedGraphicsBody.h"
 #include "Physics.h"
 
 class Physics;
@@ -16,6 +16,7 @@ class Graphics {
     void addGameObject(int type, std::string name, Ogre::Real x, Ogre::Real y, Ogre::Real z, Ogre::Real angle, Ogre::Real l, Ogre::Real w, Ogre::Real h);
     void setJumping(bool jump);
     bool getJumping();
+    void animate();
 
   private:
     Ogre::SceneManager *sceneMgr;

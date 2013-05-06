@@ -2,9 +2,9 @@
 #define __Penguin_h_
 
 #include <Ogre.h>
-#include "GraphicsBody.h"
+#include "AnimatedGraphicsBody.h"
 
-class Penguin : public GraphicsBody {
+class Penguin : public AnimatedGraphicsBody {
   public:
     Penguin(Ogre::SceneManager* sceneMgr, std::string name);
     virtual ~Penguin(void);
