@@ -39,9 +39,7 @@ Physics::~Physics(void) {
 
 void Physics::step(void) {
   dynamicWorld->stepSimulation(1.f/60.f);
-<<<<<<< HEAD
   graphics->animate();
-=======
   int numManifolds = dynamicWorld->getDispatcher()->getNumManifolds();
   for (int i = 0; i < numManifolds; i++) {
     btPersistentManifold* contactManifold =  dynamicWorld->getDispatcher()->getManifoldByIndexInternal(i);
@@ -77,7 +75,6 @@ void Physics::resetObject(PhysicsBody* object) {
   body->translate(-translate);
   body->translate(checkpoint);
   --lives;
->>>>>>> 66ee6af90c1d7f79080d5480f2af460ced9466c1
 }
 
 void Physics::initialize(void) {
