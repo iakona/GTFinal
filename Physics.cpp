@@ -4,13 +4,20 @@ btVector3 checkpoint;
 
 #define BIT(x) (1<<(x))
 enum collisiontypes {
-    COL_NOTHING = 0, //<Collide with nothing
-    COL_PENGUIN = BIT(0), //<Collide with penguins
-    COL_WALL = BIT(1), //<Collide with walls
-    COL_GROUND = BIT(2), //<Collide with grounds
-    COL_KILLBOX = BIT(3), //<Collide with killboxes
-    COL_GOAL = BIT(4), //<Collide with goal
-    COL_CHECKPOINT = BIT(5) //<Collid with checkpoint
+  COL_NOTHING = 0, //<Collide with nothing
+  COL_PENGUIN = BIT(0), //<Collide with penguins
+  COL_WALL = BIT(1), //<Collide with walls
+  COL_GROUND = BIT(2), //<Collide with grounds
+  COL_KILLBOX = BIT(3), //<Collide with killboxes
+  COL_GOAL = BIT(4), //<Collide with goal
+  COL_CHECKPOINT = BIT(5) //<Collid with checkpoint
+};
+
+enum propertytypes {
+  NONE = 0,
+  CHECKPOINT = BIT(1),
+  KILLBOX = BIT(2),
+  INVISIBLE = BIT(3)
 };
 
 Physics::Physics(Graphics* graphic) {
@@ -82,6 +89,8 @@ void Physics::nextStage(void) {
     addStage0();
   } else if (stageNumber == 1) {
     addStage1();
+  } else if (stageNumber == 2) {
+    addStage2();
   } else {
     stageNumber = 0;
     addStage0();
@@ -89,8 +98,7 @@ void Physics::nextStage(void) {
 }
 
 void Physics::addStage0(void) {
-  //addKillBox("killBox0", 0, 0, 0, 0, 8000, 0, 8000);
-  addGround("ground", 0, 0, 0, 0, 8000, 0, 8000, 2);
+  addGround("ground", 0, 0, 0, 0, 8000, 0, 8000, KILLBOX);
   addGoal("goal", -60, 845, 3640, 0);
   addWall("wall0", 0, 440, 0, 0, 80, 40, 120);   // start
   addWall("wall1", 0, 520, 160, 0, 80, 40, 40);  // stairs 1
@@ -104,7 +112,7 @@ void Physics::addStage0(void) {
   addWall("wall9", -800, 640, 2280, 0, 40, 30, 40);
   addWall("wall10", -880, 720, 1880, 0, 40, 20, 80);
   addWall("wall11", -880, 780, 1760, 0, 40, 40, 40);
-  addWall("wall12", -720, 880, 2200, 45, 80, 20, 320, 1); // end of jump puzzle 1
+  addWall("wall12", -720, 880, 2200, 45, 80, 20, 320, CHECKPOINT); // end of jump puzzle 1
   addWall("wall12_2", -230, 940, 2200, 0, 15, 10, 40);
   addWall("wall12_3", -170, 1020, 2140, 0, 15, 10, 40);
   addWall("wall12_4", -110, 1090, 2080, 0, 15, 10, 40);
@@ -120,8 +128,7 @@ void Physics::addStage0(void) {
 }
 
 void Physics::addStage1(void) {
-//   addKillBox("killBox0", 0, 0, 0, 0, 8000, 0, 8000);
-  addGround("ground", 0, 0, 0, 0, 8000, 0, 8000, 2);
+  addGround("ground", 0, 0, 0, 0, 8000, 0, 8000, KILLBOX);
   addGoal("goal", -60, 885, 3640, 0);
   addWall("wall0", 0, 140, 0, 0, 80, 40, 120);   // start
   addWall("wall1", 0, 120, 160, 0, 80, 40, 40);  // stairs 1
@@ -132,7 +139,159 @@ void Physics::addStage1(void) {
 }
 
 void Physics::addStage2(void) {
-  
+  addGround("ground", 0, 0, 0, 0, 8000, 0, 8000);
+  addGoal("goal", 50, 25, 1000, 0);
+  addWall("barrior_s", 0, 60, -200, 0, 500, 60, 50);
+  addWall("barrior_n", 0, 60, 1200, 0, 500, 60, 50);
+  addWall("barrior_w", 550, 60, 500, SIMD_HALF_PI, 650, 60, 50);
+  addWall("barrior_e", -550, 60, 500, SIMD_HALF_PI, 650, 60, 50);
+
+//   addWall("wall0", 450, 60, -100, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall1", 350, 60, -100, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall2", 250, 60, -100, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall3", 150, 60, -100, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall4", 50, 60, -100, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall5", -50, 60, -100, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall6", -150, 60, -100, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall7", -250, 60, -100, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall8", -350, 60, -100, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall9", -450, 60, -100, 0, 50, 60, 50, INVISIBLE);
+
+
+//   addWall("wall10", 450, 60, 0, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall11", 350, 60, 0, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall12", 250, 60, 0, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall13", 150, 60, 0, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall14", 50, 60, 0, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall15", -50, 60, 0, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall16", -150, 60, 0, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall17", -250, 60, 0, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall18", -350, 60, 0, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall19", -450, 60, 0, 0, 50, 60, 50, INVISIBLE);
+
+//   addWall("wall20", 450, 60, 100, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall21", 350, 60, 100, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall22", 250, 60, 100, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall23", 150, 60, 100, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall24", 50, 60, 100, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall25", -50, 60, 100, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall26", -150, 60, 100, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall27", -250, 60, 100, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall28", -350, 60, 100, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall29", -450, 60, 100, 0, 50, 60, 50, INVISIBLE);
+
+  addWall("wall30", 450, 60, 200, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall31", 350, 60, 200, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall32", 250, 60, 200, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall33", 150, 60, 200, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall34", 50, 60, 200, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall35", -50, 60, 200, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall36", -150, 60, 200, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall37", -250, 60, 200, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall38", -350, 60, 200, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall39", -450, 60, 200, 0, 50, 60, 50, INVISIBLE);
+
+//   addWall("wall40", 450, 60, 300, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall41", 350, 60, 300, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall42", 250, 60, 300, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall43", 150, 60, 300, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall44", 50, 60, 300, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall45", -50, 60, 300, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall46", -150, 60, 300, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall47", -250, 60, 300, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall48", -350, 60, 300, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall49", -450, 60, 300, 0, 50, 60, 50, INVISIBLE);
+
+//   addWall("wall50", 450, 60, 400, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall51", 350, 60, 400, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall52", 250, 60, 400, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall53", 150, 60, 400, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall54", 50, 60, 400, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall55", -50, 60, 400, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall56", -150, 60, 400, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall57", -250, 60, 400, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall58", -350, 60, 400, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall59", -450, 60, 400, 0, 50, 60, 50, INVISIBLE);
+
+//   addWall("wall60", 450, 60, 500, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall61", 350, 60, 500, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall62", 250, 60, 500, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall63", 150, 60, 500, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall64", 50, 60, 500, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall65", -50, 60, 500, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall66", -150, 60, 500, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall67", -250, 60, 500, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall68", -350, 60, 500, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall69", -450, 60, 500, 0, 50, 60, 50, INVISIBLE);
+
+  addWall("wall70", 450, 60, 600, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall71", 350, 60, 600, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall72", 250, 60, 600, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall73", 150, 60, 600, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall74", 50, 60, 600, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall75", -50, 60, 600, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall76", -150, 60, 600, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall77", -250, 60, 600, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall78", -350, 60, 600, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall79", -450, 60, 600, 0, 50, 60, 50, INVISIBLE);
+
+//   addWall("wall80", 450, 60, 700, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall81", 350, 60, 700, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall82", 250, 60, 700, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall83", 150, 60, 700, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall84", 50, 60, 700, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall85", -50, 60, 700, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall86", -150, 60, 700, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall87", -250, 60, 700, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall88", -350, 60, 700, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall89", -450, 60, 700, 0, 50, 60, 50, INVISIBLE);
+
+//   addWall("wall90", 450, 60, 800, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall91", 350, 60, 800, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall92", 250, 60, 800, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall93", 150, 60, 800, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall94", 50, 60, 800, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall95", -50, 60, 800, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall96", -150, 60, 800, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall97", -250, 60, 800, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall98", -350, 60, 800, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall99", -450, 60, 800, 0, 50, 60, 50, INVISIBLE);
+
+//   addWall("wall100", 450, 60, 900, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall101", 350, 60, 900, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall102", 250, 60, 900, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall103", 150, 60, 900, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall104", 50, 60, 900, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall105", -50, 60, 900, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall106", -150, 60, 900, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall107", -250, 60, 900, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall108", -350, 60, 900, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall109", -450, 60, 900, 0, 50, 60, 50, INVISIBLE);
+
+//   addWall("wall110", 450, 60, 1000, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall111", 350, 60, 1000, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall112", 250, 60, 1000, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall113", 150, 60, 1000, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall114", 50, 60, 1000, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall115", -50, 60, 1000, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall116", -150, 60, 1000, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall117", -250, 60, 1000, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall118", -350, 60, 1000, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall119", -450, 60, 1000, 0, 50, 60, 50, INVISIBLE);
+
+//   addWall("wall120", 450, 60, 1100, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall121", 350, 60, 1100, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall122", 250, 60, 1100, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall123", 150, 60, 1100, 0, 50, 60, 50, INVISIBLE);
+  addWall("wall124", 50, 60, 1100, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall125", -50, 60, 1100, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall126", -150, 60, 1100, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall127", -250, 60, 1100, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall128", -350, 60, 1100, 0, 50, 60, 50, INVISIBLE);
+//   addWall("wall129", -450, 60, 1100, 0, 50, 60, 50, INVISIBLE);
+
+  movePenguin(btVector3(25, 25, -100));
+  checkpoint = btVector3(25, 25, -100);
 }
 
 void Physics::movePenguin(btVector3 location) {
@@ -152,20 +311,23 @@ void Physics::addGameObject(PhysicsBody* obj, int type, std::string name, btScal
   int killboxCollidesWith = COL_PENGUIN;
   int goalCollidesWith = COL_PENGUIN;
   int checkpointCollidesWith = COL_PENGUIN;
-  if (property == 1)
+  if (property & CHECKPOINT)
     dynamicWorld->addRigidBody(obj->getBody(), COL_CHECKPOINT, checkpointCollidesWith);
-  else if (property == 2)
+  if (property & KILLBOX)
     dynamicWorld->addRigidBody(obj->getBody(), COL_KILLBOX, killboxCollidesWith);
-  else if (type == 0)
-    dynamicWorld->addRigidBody(obj->getBody(), COL_PENGUIN, penguinCollidesWith);
-  else if (type == 1)
-    dynamicWorld->addRigidBody(obj->getBody(), COL_WALL, wallCollidesWith);
-  else if (type == 2)
-    dynamicWorld->addRigidBody(obj->getBody(), COL_GROUND, groundCollidesWith);
-  else if (type == 3)
-    dynamicWorld->addRigidBody(obj->getBody(), COL_GOAL, goalCollidesWith);
+  if (property == NONE || property & INVISIBLE) {
+    if (type == 0)
+      dynamicWorld->addRigidBody(obj->getBody(), COL_PENGUIN, penguinCollidesWith);
+    else if (type == 1)
+      dynamicWorld->addRigidBody(obj->getBody(), COL_WALL, wallCollidesWith);
+    else if (type == 2)
+      dynamicWorld->addRigidBody(obj->getBody(), COL_GROUND, groundCollidesWith);
+    else if (type == 3)
+      dynamicWorld->addRigidBody(obj->getBody(), COL_GOAL, goalCollidesWith);
+  }
   obj->getBody()->setUserPointer(gameBodies[gameBodies.size()-1]);
-  graphics->addGameObject(type, name, x, y, z, angle, l, h, w);
+  bool invisible = property & INVISIBLE;
+  graphics->addGameObject(type, name, x, y, z, angle, l, h, w, invisible);
 }
 
 void Physics::addPenguin(std::string name) {

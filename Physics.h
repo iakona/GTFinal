@@ -11,12 +11,6 @@
 class Graphics;
 class PhysicsBody;
 
-/** Property
- *  0 = nothing
- *  1 = checkpoint
- *  2 = killbox
- */
-
 class Physics {
   public:
     Physics(Graphics*);

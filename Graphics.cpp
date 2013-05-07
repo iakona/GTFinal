@@ -47,12 +47,12 @@ void Graphics::setObjectOrientation(std::string name, Ogre::Real w, Ogre::Real x
 * 2 = killbox
 * 3 = goal
 */
-void Graphics::addGameObject(int type, std::string name, Ogre::Real x, Ogre::Real y, Ogre::Real z, Ogre::Real angle, Ogre::Real l, Ogre::Real h, Ogre::Real w) {
+void Graphics::addGameObject(int type, std::string name, Ogre::Real x, Ogre::Real y, Ogre::Real z, Ogre::Real angle, Ogre::Real l, Ogre::Real h, Ogre::Real w, bool invisible) {
   GraphicsBody* obj;
   if (type == 0) {
     obj = new Penguin(sceneMgr, name);
   } else if (type == 1) {
-    obj = new Wall(sceneMgr, name, x, y, z, Ogre::Radian(angle), l, h, w);
+    obj = new Wall(sceneMgr, name, x, y, z, Ogre::Radian(angle), l, h, w, invisible);
   } else if (type == 2) {
     obj = new Terrain(sceneMgr, name, x, y, z, Ogre::Radian(angle), l, h, w);
   } else if (type == 3) {
