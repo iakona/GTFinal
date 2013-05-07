@@ -65,6 +65,15 @@ void GameState::createScene() {
   PenguinNode = m_pSceneMgr->getSceneNode("penguin");
 
   m_pSceneMgr->setSkyDome(true, "Examples/CloudySky", 5, 8);
+  
+  // Create a rainstorm
+  Ogre::ParticleSystem* pSys4 = m_pSceneMgr->createParticleSystem("snow",
+                                                       "Examples/Snow");
+  Ogre::SceneNode* rNode = m_pSceneMgr->getRootSceneNode()->createChildSceneNode("snowNode");
+  rNode->translate(0, 1200, 2000);
+  rNode->attachObject(pSys4);
+  // Fast-forward the rain so it looks more natural
+  pSys4->fastForward(100);
 
   CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
   CEGUI::Window *gameWindow = wmgr.createWindow("DefaultWindow", "CEGUI/GameGUI");
