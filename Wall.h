@@ -7,7 +7,7 @@
 class Wall : public GraphicsBody {
   public:
     Wall(Ogre::SceneManager* sceneMgr, std::string name, Ogre::Real x, Ogre::Real y, Ogre::Real z, Ogre::Radian angle);
-    Wall(Ogre::SceneManager* sceneMgr, std::string name, Ogre::Real x, Ogre::Real y, Ogre::Real z, Ogre::Radian angle, Ogre::Real l, Ogre::Real h, Ogre::Real w);
+    Wall(Ogre::SceneManager* sceneMgr, std::string name, Ogre::Real x, Ogre::Real y, Ogre::Real z, Ogre::Radian angle, Ogre::Real l, Ogre::Real h, Ogre::Real w, bool invisible = false);
     virtual ~Wall(void);
 
   private:

@@ -1,6 +1,6 @@
-#include "Terrain.h"
+#include "KillBox.h"
 
-Terrain::Terrain(Ogre::SceneManager* sceneMgr, std::string name,
+KillBox::KillBox(Ogre::SceneManager* sceneMgr, std::string name,
   Ogre::Real x, Ogre::Real y, Ogre::Real z, Ogre::Radian angle,
   Ogre::Real l, Ogre::Real h, Ogre::Real w) {
   Ogre::Entity* entity = sceneMgr->createEntity(name, "cube.mesh");
@@ -14,5 +14,5 @@ Terrain::Terrain(Ogre::SceneManager* sceneMgr, std::string name,
   setNode(sceneNode);
 }
 
-Terrain::~Terrain(void) {
+KillBox::~KillBox(void) {
 }

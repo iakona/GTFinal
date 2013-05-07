@@ -2,6 +2,13 @@
  
 using namespace Ogre;
 
+CEGUI::Window *face;
+CEGUI::Window *life;
+CEGUI::Window *health;
+
+float hp;
+bool showHealth;
+
 CEGUI::MouseButton convertButton2(OIS::MouseButtonID buttonID) {
   switch (buttonID) {
     case OIS::MB_Left:
@@ -63,7 +70,7 @@ void GameState::createScene() {
   CEGUI::Window *gameWindow = wmgr.createWindow("DefaultWindow", "CEGUI/GameGUI");
 
   // penguin portrait
-  CEGUI::Window *face = CEGUI::WindowManager::getSingleton().createWindow("TaharezLook/StaticImage", "FacePng");
+  face = CEGUI::WindowManager::getSingleton().createWindow("TaharezLook/StaticImage", "FacePng");
   face->setSize(CEGUI::UVector2(CEGUI::UDim(0.1, 0), CEGUI::UDim(0.13, 0)));
   face->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 0), CEGUI::UDim(0, 0)));
   face->setProperty("Image","set:Face image:full_image");
@@ -71,9 +78,47 @@ void GameState::createScene() {
   face->setProperty("BackgroundEnabled", "False");
   gameWindow->addChildWindow(face);
 
+  // life
+  life = wmgr.createWindow("TaharezLook/StaticText", "CEGUI/Life");
+  stringstream s;
+  s << physics->getLives();
+  life->setText("x"+s.str());
+  life->setSize(CEGUI::UVector2(CEGUI::UDim(0.04, 0), CEGUI::UDim(0.05, 0)));
+  life->setPosition(CEGUI::UVector2(CEGUI::UDim(0.08, 0), CEGUI::UDim(0.048, 0)));
+  life->setProperty("FrameEnabled", "False");
+  life->setProperty("BackgroundEnabled", "False");
+  // life->setProperty("Font", "Jura-18");
+  gameWindow->addChildWindow(life);
+
+  // health bar for certain stages
+  hp = 1.0f;
+  showHealth = false;
+  health = wmgr.createWindow("TaharezLook/ProgressBar", "CEGUI/Health");
+  health->setSize(CEGUI::UVector2(CEGUI::UDim(0.5, 0), CEGUI::UDim(0.04, 0)));
+  health->setPosition(CEGUI::UVector2(CEGUI::UDim(0.08, 0), CEGUI::UDim(0.01, 0)));
+  health->setProperty("Visible", "False");
+  gameWindow->addChildWindow(health);
+
   CEGUI::System::getSingleton().setGUISheet(gameWindow);
 }
  
+void GameState::UpdateGUI() {
+  stringstream s;
+  s << physics->getLives();
+  life->setProperty("Text", "x"+s.str());
+
+  if(showHealth){
+    hp -= 0.0005;
+    if(hp <= 0.0){
+      hp = 1.0f;
+      physics->penguinOutOfHealth();
+    }
+    stringstream s2;
+    s2 << hp;
+    health->setProperty("CurrentProgress", s2.str());
+  }
+}
+
 void GameState::exit() {
   OgreFramework::getSingletonPtr()->m_pLog->logMessage("Leaving GameState...");
  
@@ -91,6 +136,19 @@ bool GameState::keyPressed(const OIS::KeyEvent &keyEventRef) {
     CEGUI::WindowManager::getSingleton().destroyWindow( "CEGUI/GameGUI" );
     popAllAndPushAppState(findByName("MenuState"));
     return true;
+  }
+
+ /*********************************************
+  * MAKE SURE TO REMOVE IN FINAL VERSION!!!!! *
+  *********************************************/
+  if (OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_N)) {
+    if(showHealth){
+      health->setProperty("Visible", "False");
+      showHealth = false;
+    } else{
+      health->setProperty("Visible", "True");
+      showHealth = true;
+    }
   }
 
   OgreFramework::getSingletonPtr()->keyPressed(keyEventRef);
@@ -146,47 +204,39 @@ void GameState::update(double timeSinceLastFrame) {
     shutdown();
     return;
   }
+  UpdateGUI();
+  if (physics->gameOver()) {
+    CEGUI::WindowManager::getSingleton().destroyWindow( "CEGUI/GameGUI" );
+    popAllAndPushAppState(findByName("MenuState"));
+  }
 }
 
 void GameState::getInput() {
   OIS::Keyboard* keyboard = OgreFramework::getSingletonPtr()->m_pKeyboard;
-  //bool moving = false;
   if (keyboard->isKeyDown(OIS::KC_Q)) {
-    //PenguinNode->yaw(Ogre::Degree(5));
     physics->rotate(0, Ogre::Degree(3).valueRadians());
   }
   if (keyboard->isKeyDown(OIS::KC_E)) {
-    //PenguinNode->yaw(Ogre::Degree(-5));
     physics->rotate(0, Ogre::Degree(-3).valueRadians());
   }
   Ogre::Vector3 dir = PenguinNode->getOrientation() * Ogre::Vector3::UNIT_Z;
   if (keyboard->isKeyDown(OIS::KC_W) || keyboard->isKeyDown(OIS::KC_UP)) {
-    //PenguinNode->translate(5.0f * dir[0], 0.0f, 5.0f * dir[2]);
     physics->translate(0, 5.0f * dir[0], 0.0f, 5.0f * dir[2]);
-    //moving = true;
   }
   if (keyboard->isKeyDown(OIS::KC_S) || keyboard->isKeyDown(OIS::KC_DOWN)) {
-    //PenguinNode->translate(-5.0f * dir[0], 0.0f, -5.0f * dir[2]);
     physics->translate(0, -5.0f * dir[0], 0.0f, -5.0f * dir[2]);
-    //moving = true;
   }
   if (keyboard->isKeyDown(OIS::KC_A) || keyboard->isKeyDown(OIS::KC_LEFT)) {
-    //PenguinNode->translate(5.0f * dir[2], 0.0f, -5.0f * dir[0]);
     physics->translate(0, 5.0f * dir[2], 0.0f, -5.0f * dir[0]);
-    //moving = true;
   }
   if (keyboard->isKeyDown(OIS::KC_D) || keyboard->isKeyDown(OIS::KC_RIGHT)) {
-    //PenguinNode->translate(-5.0f * dir[2], 0.0f, 5.0f * dir[0]);
     physics->translate(0, -5.0f * dir[2], 0.0f, 5.0f * dir[0]);
-    //moving = true;
   }
+
   if (keyboard->isKeyDown(OIS::KC_SPACE)) {
-    //std::cout << "jump" << std::endl;
     if(!graphics->getJumping()){
       physics->applyForce(0, 0, 14000, 0);
       graphics->setJumping(true);
     }
   }
-  //if (!moving)
-    //physics->stop(0);
 }

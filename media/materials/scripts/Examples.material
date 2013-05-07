@@ -20,6 +20,36 @@ material Examples/SphereMappedRustySteel
 	}
 }
 
+material Examples/Frosty
+{
+  technique
+	{
+		pass
+		{
+			lighting off
+			texture_unit
+			{
+				texture frost.png
+			}
+		}
+	}
+}
+
+material Ground_Grass_sub2
+{
+	technique
+	{
+		pass
+		{
+
+			texture_unit
+			{
+				texture terr_dirt-grass.jpg
+			}
+		}
+	}
+}
+
 material Examples/OgreLogo
 {
 	technique
