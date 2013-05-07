@@ -4,6 +4,10 @@ using namespace Ogre;
 
 CEGUI::Window *face;
 CEGUI::Window *life;
+CEGUI::Window *health;
+
+float hp;
+bool showHealth;
 
 CEGUI::MouseButton convertButton2(OIS::MouseButtonID buttonID) {
   switch (buttonID) {
@@ -86,6 +90,15 @@ void GameState::createScene() {
   // life->setProperty("Font", "Jura-18");
   gameWindow->addChildWindow(life);
 
+  // health bar for certain stages
+  hp = 1.0f;
+  showHealth = false;
+  health = wmgr.createWindow("TaharezLook/ProgressBar", "CEGUI/Health");
+  health->setSize(CEGUI::UVector2(CEGUI::UDim(0.5, 0), CEGUI::UDim(0.04, 0)));
+  health->setPosition(CEGUI::UVector2(CEGUI::UDim(0.08, 0), CEGUI::UDim(0.01, 0)));
+  health->setProperty("Visible", "False");
+  gameWindow->addChildWindow(health);
+
   CEGUI::System::getSingleton().setGUISheet(gameWindow);
 }
  
@@ -93,6 +106,13 @@ void GameState::UpdateGUI() {
   stringstream s;
   s << physics->getLives();
   life->setProperty("Text", "x"+s.str());
+
+  if(showHealth){
+    hp -= 0.00025;
+    stringstream s2;
+    s2 << hp;
+    health->setProperty("CurrentProgress", s2.str());
+  }
 }
 
 void GameState::exit() {
@@ -112,6 +132,19 @@ bool GameState::keyPressed(const OIS::KeyEvent &keyEventRef) {
     CEGUI::WindowManager::getSingleton().destroyWindow( "CEGUI/GameGUI" );
     popAllAndPushAppState(findByName("MenuState"));
     return true;
+  }
+
+ /*********************************************
+  * MAKE SURE TO REMOVE IN FINAL VERSION!!!!! *
+  *********************************************/
+  if (OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_N)) {
+    if(showHealth){
+      health->setProperty("Visible", "False");
+      showHealth = false;
+    } else{
+      health->setProperty("Visible", "True");
+      showHealth = true;
+    }
   }
 
   OgreFramework::getSingletonPtr()->keyPressed(keyEventRef);
