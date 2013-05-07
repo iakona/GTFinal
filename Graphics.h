@@ -1,7 +1,7 @@
 #ifndef __Graphics_h_
 #define __Graphics_h_
 
-#include "GraphicsBody.h"
+#include "AnimatedGraphicsBody.h"
 #include "Physics.h"
 #include "SoundManager.h"
 
@@ -20,6 +20,7 @@ class Graphics {
     void removeObject(int pos);
     void setJumping(bool jump);
     bool getJumping();
+    void animate();
 
   private:
     Ogre::SceneManager *sceneMgr;

@@ -74,3 +74,12 @@ void Graphics::setJumping(bool jump) {
 bool Graphics::getJumping() {
   return jumping;
 }
+
+void Graphics::animate(){
+  for(int i=0;i<gameObjects.size();i++){
+    AnimatedGraphicsBody* animatedObj = dynamic_cast<AnimatedGraphicsBody*>(gameObjects[i]);
+    if(animatedObj != NULL){
+      animatedObj->animate();
+    }
+  }
+}

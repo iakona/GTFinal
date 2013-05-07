@@ -39,6 +39,7 @@ Physics::~Physics(void) {
 
 void Physics::step(void) {
   dynamicWorld->stepSimulation(1.f/60.f);
+  graphics->animate();
   int numManifolds = dynamicWorld->getDispatcher()->getNumManifolds();
   for (int i = 0; i < numManifolds; i++) {
     btPersistentManifold* contactManifold =  dynamicWorld->getDispatcher()->getManifoldByIndexInternal(i);
