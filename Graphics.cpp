@@ -54,7 +54,7 @@ void Graphics::addGameObject(int type, std::string name, Ogre::Real x, Ogre::Rea
   } else if (type == 1) {
     obj = new Wall(sceneMgr, name, x, y, z, Ogre::Radian(angle), l, h, w);
   } else if (type == 2) {
-    obj = new KillBox(sceneMgr, name, x, y, z, Ogre::Radian(angle), l, h, w);
+    obj = new Terrain(sceneMgr, name, x, y, z, Ogre::Radian(angle), l, h, w);
   } else if (type == 3) {
     obj = new Goal(sceneMgr, name, x, y, z, Ogre::Radian(angle));
   }
