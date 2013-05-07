@@ -28,7 +28,7 @@ class Graphics {
     std::vector<GraphicsBody*> gameObjects;
     bool jumping;
     SoundManager* soundMgr;
-    Sound* golfPutt;
+    Sound* penguinJump;
     Sound* wallHit;
     Sound* inTheHole;
 };
