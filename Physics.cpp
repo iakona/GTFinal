@@ -39,12 +39,10 @@ void Physics::step(void) {
     btBroadphaseProxy* obA_proxy = obA->getBroadphaseHandle();
     btBroadphaseProxy* obB_proxy = obB->getBroadphaseHandle();
     if (obA_proxy->m_collisionFilterGroup & obB_proxy->m_collisionFilterMask) {
-      //std::cout << obA_proxy->m_collisionFilterGroup << " " << obB_proxy->m_collisionFilterGroup << std::endl;
       if (obA_proxy->m_collisionFilterGroup == COL_PENGUIN && obB_proxy->m_collisionFilterGroup == COL_KILLBOX) {
         PhysicsBody* object = reinterpret_cast<PhysicsBody*>(obA->getUserPointer());
         resetObject(object);
       } else if (obA_proxy->m_collisionFilterGroup == COL_PENGUIN && obB_proxy->m_collisionFilterGroup == COL_GOAL) {
-        std::cout << "YOU WIN!!!!" << std::endl;
         nextStage();
         graphics->playSound(2);
       } else if (obA_proxy->m_collisionFilterGroup == COL_PENGUIN && obB_proxy->m_collisionFilterGroup == COL_CHECKPOINT) {
@@ -68,7 +66,6 @@ void Physics::resetObject(PhysicsBody* object) {
   body->translate(-translate);
   body->translate(checkpoint);
   --lives;
-  //std::cout << "Lives Remaining: " << lives << std::endl;
 }
 
 void Physics::initialize(void) {
@@ -163,22 +160,16 @@ void Physics::addGameObject(PhysicsBody* obj, int type, std::string name, btScal
 
 void Physics::addPenguin(std::string name) {
   MotionState* motionState = new MotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,505,0)), graphics, name);
-  //MotionState* motionState = new MotionState(btTransform(btQuaternion(0,0,0,1),btVector3(-720,945,2200)), graphics, name);
-//   btCollisionShape* shape = new btBoxShape(btVector3(61.7703 / 2, 47.0496 / 2, 48.3053 / 2));
   btCollisionShape* shape = new btBoxShape(btVector3(30, 25, 25));
-  //btCollisionShape* shape = new btSphereShape(2);
   btScalar mass = 1;
   btVector3 inertia(0,0,0);
   shape->calculateLocalInertia(mass,inertia);
   btRigidBody::btRigidBodyConstructionInfo info(mass,motionState,shape,inertia);
   btRigidBody* body = new btRigidBody(info);
 
-  //body->setRestitution(.78);
   body->setFriction(1);
   body->setDamping(.4,.2);
   body->setRestitution(0);
-//   body->setFriction(0);
-//   body->setDamping(0,0);
   body->setActivationState(DISABLE_DEACTIVATION);
   body->setAngularFactor(btVector3(0, 1, 0));
 
@@ -199,7 +190,6 @@ void Physics::addWall(std::string name, btScalar x, btScalar y, btScalar z, btSc
   btRigidBody::btRigidBodyConstructionInfo info(mass,motionState,shape,intertia);
   btRigidBody* body = new btRigidBody(info);
   body->setRestitution(.85);
-  //body->setRestitution(0);
   body->setLinearVelocity(btVector3(0,0,0));
   body->setFriction(1);
   body->setDamping(0,.2);
@@ -220,7 +210,6 @@ void Physics::addKillBox(std::string name, btScalar x, btScalar y, btScalar z, b
 
   btRigidBody::btRigidBodyConstructionInfo info(mass,motionState,shape,intertia);
   btRigidBody* body = new btRigidBody(info);
-  //body->setCollisionFlags
   body->setActivationState(DISABLE_DEACTIVATION);
 
   PhysicsBody* physicsBody = new PhysicsBody(body, motionState);
@@ -239,7 +228,6 @@ void Physics::addGoal(std::string name, btScalar x, btScalar y, btScalar z, btSc
   btRigidBody::btRigidBodyConstructionInfo info(mass,motionState,shape,intertia);
   btRigidBody* body = new btRigidBody(info);
   body->setRestitution(.85);
-  //body->setRestitution(0);
   body->setLinearVelocity(btVector3(0,0,0));
   body->setFriction(1);
   body->setDamping(0,.2);
@@ -261,37 +249,16 @@ void Physics::removeStage(void) {
 }
 
 void Physics::translate(int index, btScalar x, btScalar y, btScalar z) {
-  //std::cout << "moving" << std::endl;
   btRigidBody* body = gameBodies.at(index)->getBody();
   body->translate(btVector3(x, y, z));
-  //body->translate(btVector3(1000, 0, 0));
-  //body->setLinearVelocity(btVector3(x, y, z));
-  //body->applyCentralForce(btVector3(x, y, z));
 }
 
 void Physics::rotate(int index, btScalar angle) {
   btRigidBody* body = gameBodies.at(index)->getBody();
-  /*btTransform transform = body->getWorldTransform();
-  btQuaternion rotate = transform.getRotation();
-  btVector3 axis = rotate.getAxis();
-  axis.setX(0);
-  axis.setY(1);
-  axis.setZ(0);
-  std::cout << rotate.getAngle() << std::endl;
-  rotate.setRotation(axis, rotate.getAngle() + angle);
-  transform.setRotation(rotate);
-  body->setWorldTransform(transform);*/
-  //btTransform tr;
-  //tr.setIdentity();
   btQuaternion quat;
-  quat.setEuler(angle,0,0); //or quat.setEulerZYX depending on the ordering you want
-  //tr.setRotation(quat);
+  quat.setEuler(angle,0,0);
   btTransform transform = body->getCenterOfMassTransform();
   transform.setRotation(transform.getRotation() * quat);
-  //tr.setBasis(transform.getBasis());
-  //tr.setOrigin(transform.getOrigin());
-  //transform.setRotation(transform.getRotation() + quat);
-  //body->setCenterOfMassTransform(tr * transform);
   body->setCenterOfMassTransform(transform);
 }
 
@@ -299,12 +266,6 @@ void Physics::applyForce(int index, btScalar x, btScalar y, btScalar z) {
   btRigidBody* body = gameBodies.at(index)->getBody();
   body->applyCentralForce(btVector3(x, y, z));
   graphics->playSound(0);
-}
-
-void Physics::stop(int index) {
-  //std::cout << "stopped" << std::endl;
-  //btRigidBody* body = gameBodies.at(index)->getBody();
-  //body->setLinearVelocity(btVector3(0, 0, 0));
 }
 
 bool Physics::gameOver() {
