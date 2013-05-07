@@ -209,44 +209,30 @@ void GameState::update(double timeSinceLastFrame) {
 
 void GameState::getInput() {
   OIS::Keyboard* keyboard = OgreFramework::getSingletonPtr()->m_pKeyboard;
-  //bool moving = false;
   if (keyboard->isKeyDown(OIS::KC_Q)) {
-    //PenguinNode->yaw(Ogre::Degree(5));
     physics->rotate(0, Ogre::Degree(3).valueRadians());
   }
   if (keyboard->isKeyDown(OIS::KC_E)) {
-    //PenguinNode->yaw(Ogre::Degree(-5));
     physics->rotate(0, Ogre::Degree(-3).valueRadians());
   }
   Ogre::Vector3 dir = PenguinNode->getOrientation() * Ogre::Vector3::UNIT_Z;
   if (keyboard->isKeyDown(OIS::KC_W) || keyboard->isKeyDown(OIS::KC_UP)) {
-    //PenguinNode->translate(5.0f * dir[0], 0.0f, 5.0f * dir[2]);
     physics->translate(0, 5.0f * dir[0], 0.0f, 5.0f * dir[2]);
-    //moving = true;
   }
   if (keyboard->isKeyDown(OIS::KC_S) || keyboard->isKeyDown(OIS::KC_DOWN)) {
-    //PenguinNode->translate(-5.0f * dir[0], 0.0f, -5.0f * dir[2]);
     physics->translate(0, -5.0f * dir[0], 0.0f, -5.0f * dir[2]);
-    //moving = true;
   }
   if (keyboard->isKeyDown(OIS::KC_A) || keyboard->isKeyDown(OIS::KC_LEFT)) {
-    //PenguinNode->translate(5.0f * dir[2], 0.0f, -5.0f * dir[0]);
     physics->translate(0, 5.0f * dir[2], 0.0f, -5.0f * dir[0]);
-    //moving = true;
   }
   if (keyboard->isKeyDown(OIS::KC_D) || keyboard->isKeyDown(OIS::KC_RIGHT)) {
-    //PenguinNode->translate(-5.0f * dir[2], 0.0f, 5.0f * dir[0]);
     physics->translate(0, -5.0f * dir[2], 0.0f, 5.0f * dir[0]);
-    //moving = true;
   }
 
   if (keyboard->isKeyDown(OIS::KC_SPACE)) {
-    //std::cout << "jump" << std::endl;
     if(!graphics->getJumping()){
       physics->applyForce(0, 0, 14000, 0);
       graphics->setJumping(true);
     }
   }
-  //if (!moving)
-    //physics->stop(0);
 }

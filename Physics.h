@@ -30,7 +30,6 @@ class Physics {
     void translate(int index, btScalar x, btScalar y, btScalar z);
     void rotate(int index, btScalar angle);
     void applyForce(int index, btScalar x, btScalar y, btScalar z);
-    void stop(int index);
     int getLives() { return lives; };
     bool gameOver();
 
