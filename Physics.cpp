@@ -144,6 +144,16 @@ void Physics::movePenguin(btVector3 location) {
   body->translate(location);
 }
 
+void Physics::penguinOutOfHealth(void) {
+  btRigidBody* body = gameBodies.at(0)->getBody();
+  body->setLinearVelocity(btVector3(0,0,0));
+  body->setAngularVelocity(btVector3(0,0,0));
+  btVector3 translate = body->getCenterOfMassPosition();
+  body->translate(-translate);
+  body->translate(checkpoint);
+  lives--;
+}
+
 void Physics::addGameObject(PhysicsBody* obj, int type, std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w, int property) {
   gameBodies.push_back(obj);
   int penguinCollidesWith = COL_WALL | COL_GROUND | COL_KILLBOX | COL_GOAL | COL_CHECKPOINT;

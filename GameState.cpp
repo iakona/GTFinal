@@ -108,7 +108,11 @@ void GameState::UpdateGUI() {
   life->setProperty("Text", "x"+s.str());
 
   if(showHealth){
-    hp -= 0.00025;
+    hp -= 0.0005;
+    if(hp <= 0.0){
+      hp = 1.0f;
+      physics->penguinOutOfHealth();
+    }
     stringstream s2;
     s2 << hp;
     health->setProperty("CurrentProgress", s2.str());

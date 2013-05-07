@@ -29,6 +29,7 @@ class Physics {
     void addStage1(void);
     void addStage2(void);
     void movePenguin(btVector3 location);
+    void penguinOutOfHealth(void);
     void addGameObject(PhysicsBody* obj, int type, std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w, int property = 0);
     void addPenguin(std::string name);
     void addWall(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w, int property = 0);
