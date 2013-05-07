@@ -15,9 +15,9 @@ enum collisiontypes {
 
 enum propertytypes {
   NONE = 0,
-  CHECKPOINT = BIT(1),
-  KILLBOX = BIT(2),
-  INVISIBLE = BIT(3)
+  CHECKPOINT = BIT(0),
+  KILLBOX = BIT(1),
+  INVISIBLE = BIT(2)
 };
 
 Physics::Physics(Graphics* graphic) {
@@ -338,8 +338,7 @@ void Physics::addGameObject(PhysicsBody* obj, int type, std::string name, btScal
       dynamicWorld->addRigidBody(obj->getBody(), COL_GOAL, goalCollidesWith);
   }
   obj->getBody()->setUserPointer(gameBodies[gameBodies.size()-1]);
-  bool invisible = property & INVISIBLE;
-  graphics->addGameObject(type, name, x, y, z, angle, l, h, w, invisible);
+  graphics->addGameObject(type, name, x, y, z, angle, l, h, w, property);
 }
 
 void Physics::addPenguin(std::string name) {

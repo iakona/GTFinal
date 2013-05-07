@@ -10,6 +10,11 @@ Goal::Goal(Ogre::SceneManager* sceneMgr, std::string name, Ogre::Real x, Ogre::R
   goalNode->yaw(angle);
   goalNode->translate(x, y, z);
   setNode(goalNode);
+  Ogre::ParticleSystem* aureola = sceneMgr->createParticleSystem(name + "particle", "Examples/GreenyNimbus");
+  Ogre::SceneNode* aureolaNode = goalNode->createChildSceneNode(name + "particleNode");
+  aureolaNode->attachObject(aureola);
+  aureola->fastForward(30);
+  aureolaNode->translate(0, -50, 0);
 }
 
 Goal::~Goal(void) {
