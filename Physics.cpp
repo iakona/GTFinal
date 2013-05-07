@@ -131,14 +131,83 @@ void Physics::addStage0(void) {
 }
 
 void Physics::addStage1(void) {
+  //   addKillBox("killBox0", 0, 0, 0, 0, 8000, 0, 8000);
   addGround("ground", 0, 0, 0, 0, 8000, 0, 8000, KILLBOX);
-  addGoal("goal", -60, 885, 3640, 0);
-  addWall("wall0", 0, 140, 0, 0, 80, 40, 120);   // start
-  addWall("wall1", 0, 120, 160, 0, 80, 40, 40);  // stairs 1
-  addWall("wall2", 0, 200, 240, 0, 80, 40, 40);
-  addWall("wall3", 0, 280, 360, 0, 80, 40, 80);
-  movePenguin(btVector3(0, 205, 0));
-  checkpoint = btVector3(0, 205, 0);
+  //addGoal("goal", -60, 885, 3640, 0);
+  addWall("south0", 0, 440, 0, 0, 760, 40, 120);   // start
+  addWall("wall1", 0, 520, 160, 0, 80, 40, 40);  // stairs 1
+  addWall("wall2", 0, 600, 240, 0, 80, 40, 40);
+  addWall("wall3", 0, 680, 360, 0, 80, 40, 80);
+  addWall("wall4", -220, 700, 540, 0, 40, 10, 40);
+  addWall("wall5", -540, 740, 460, 0, 40, 10, 40);
+  addWall("wall6", -320, 820, 380, 0, 40, 10, 40);
+  addWall("wall7", -20, 860, 370, 0, 40, 10, 40);
+  addWall("wall8", 420, 840, 420, 0, 40, 10, 40);
+  addWall("wall9", 820, 900, 420, 0, 40, 10, 40);
+  addWall("west0", 880, 1030, 800, 0, 120, 40, 670); 
+  addWall("wall10", 1340, 780, 660, 0, 40, 10, 40);
+  addWall("wall11", 1820, 700, 320, 0, 40, 10, 40);
+  addWall("wall12", 2060, 760, 400, 0, 40, 10, 40);
+  addWall("wall12_2", 2060, 760, 800, 0, 40, 10, 40);
+  addWall("wall13", 1810, 780, 1200, 0, 40, 10, 60);
+  addWall("wall14", 1380, 800, 1300, 0, 40, 40, 80);  // stairs 2
+  addWall("wall15", 1260, 880, 1300, 0, 40, 40, 80);
+  addWall("wall16", 1140, 970, 1300, 0, 40, 40, 80);
+  addWall("wall17", 170, 1100, 1000, 0, 280, 20, 100, CHECKPOINT);
+  addWall("east0", -880, 840, 800, 0, 120, 40, 670);
+  addWall("wall18", -960, 960, 300, 0, 20, 10, 20);
+  addWall("wall19", -840, 1010, 370, 0, 20, 10, 20);
+  addWall("wall20", -760, 1040, 410, 0, 20, 10, 20);
+  addWall("wall21", -540, 1100, 500, 0, 20, 10, 20);
+  addWall("wall22", -540, 1140, 620, 0, 20, 10, 20);
+  addWall("wall23", -540, 1210, 500, 0, 20, 10, 20);
+  addWall("wall24", -580, 1280, 300, 0, 20, 10, 20);
+  addWall("wall25", -600, 1300, 600, 0, 20, 10, 20);  // Stepping stone
+  addWall("wall26", -620, 1350, 680, 0, 10, 10, 10);
+  addWall("wall27", -580, 1355, 720, 0, 10, 10, 10);
+  addWall("wall28", -580, 1360, 1120, 0, 10, 10, 10);
+  addWall("wall29", -250, 1370, 1060, 0, 10, 10, 10);
+  addWall("wall30", 0, 1400, 1000, 0, 15, 10, 15);
+  addWall("wall31", -100, 1460, 1300, 0, 35, 10, 35);
+  addWall("wall32", 0, 1460, 1600, 0, 28, 10, 28);
+  addWall("wall33", 100, 1460, 1300, 0, 35, 10, 35);
+  addWall("wall34", 0, 1500, 1950, 0, 100, 10, 40, CHECKPOINT);
+  addWall("wall35", 0, 1560, 2300, 0, 40, 10, 40);
+  addWall("north0", 0, 2360, 1600, 0, 750, 800, 120);  // great wall climb
+  addWall("wall36", 300, 1640, 2200, 0, 80, 15, 40);
+  addWall("wall37", 500, 1670, 1750, 0, 60, 15, 30);
+  addWall("wall38", 100, 1700, 1750, 0, 60, 15, 30);
+  addWall("wall39", -50, 1770, 1750, 0, 60, 10, 30);
+  addWall("wall40", 150, 1835, 1750, 0, 70, 15, 30);
+  addWall("wall41", 300, 1900, 1750, 0, 70, 15, 30);
+  addWall("wall42", 450, 1970, 1750, 0, 50, 15, 30);
+  addWall("wall43", 600, 2140, 1750, 0, 60, 15, 30);
+  addWall("wall44", 350, 2200, 1750, 0, 70, 15, 30);
+  addWall("wall45", 0, 2000, 1750, 0, 40, 15, 30);
+  addWall("wall46", -180, 2080, 1750, 0, 40, 15, 30);
+  addWall("wall47", 180, 2130, 1750, 0, 60, 15, 30);
+  addWall("wall48", 980, 2220, 1750, 0, 70, 10, 30);
+  addWall("wall49", 700, 2300, 1750, 0, 70, 10, 30);
+  addWall("wall50", 300, 2360, 1750, 0, 70, 10, 30);
+  addWall("wall51", 0, 2420, 1750, 0, 70, 10, 30);
+  addWall("wall52", -300, 2490, 1750, 0, 70, 10, 30);
+  addWall("wall53", -600, 2545, 1750, 0, 70, 10, 30);
+  addWall("wall54", -900, 2620, 1750, 0, 70, 10, 30);
+  addWall("wall55", -750, 2700, 1750, 0, 70, 10, 30);
+  addWall("wall56", -1050, 2780, 1750, 0, 70, 10, 30, CHECKPOINT);
+  addWall("wall57", -1050, 2840, 1600, 0, 40, 10, 40);
+  addWall("wall58", -1050, 2920, 1500, 0, 40, 10, 40);
+  addWall("wall59", -1050, 3000, 1400, 0, 40, 10, 40);
+  addWall("wall60", -800, 3080, 1300, 0, 40, 10, 40);
+  addGoal("goal", -600, 3160, 1300, 0);
+  //addWall("top", -1050, 3000, 1400, 0, 40, 10, 40);
+  addWall("pillarsw", 880, 2000, 0, 0, 120, 1600, 120);
+  addWall("pillarnw", 880, 2000, 1600, 0, 120, 1600, 120);
+  addWall("pillarne", -880, 2000, 1600, 0, 120, 1250, 120);
+  addWall("pillarse", -880, 2000, 0, 0, 120, 1600, 120);
+  movePenguin(btVector3(0, 505, 0));
+  //movePenguin(btVector3(-1050, 2905, 1600));
+  checkpoint = btVector3(0, 505, 0);
 }
 
 void Physics::addStage2(void) {
