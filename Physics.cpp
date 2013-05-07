@@ -69,11 +69,13 @@ void Physics::step(void) {
 
 void Physics::resetObject(PhysicsBody* object) {
   btRigidBody* body = object->getBody();
+  btVector3 translate = body->getCenterOfMassPosition();
+  btVector3 diff = translate - checkpoint;
   body->setLinearVelocity(btVector3(0,0,0));
   body->setAngularVelocity(btVector3(0,0,0));
-  btVector3 translate = body->getCenterOfMassPosition();
-  body->translate(-translate);
-  body->translate(checkpoint);
+  if (diff.x() < 0.001 && diff.x() > -.001 && diff.y() == 0 && diff.z() == 5)
+    return;
+  body->translate(-translate + checkpoint);
   --lives;
 }
 
@@ -297,11 +299,10 @@ void Physics::addStage2(void) {
 
 void Physics::movePenguin(btVector3 location) {
   btRigidBody* body = gameBodies.at(0)->getBody();
+  btVector3 translate = body->getCenterOfMassPosition();
+  body->translate(-translate + location);
   body->setLinearVelocity(btVector3(0,0,0));
   body->setAngularVelocity(btVector3(0,0,0));
-  btVector3 translate = body->getCenterOfMassPosition();
-  body->translate(-translate);
-  body->translate(location);
 }
 
 void Physics::penguinOutOfHealth(void) {
