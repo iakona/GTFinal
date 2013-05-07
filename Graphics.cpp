@@ -13,7 +13,8 @@ Graphics::~Graphics(void) {
 }
 
 void Graphics::loadSounds(void) {
-  golfPutt = new Sound("media/sounds/golf_putt.wav");
+
+  penguinJump = new Sound("media/sounds/penguin_jump.wav");
   wallHit = new Sound("media/sounds/golf_hit_metal.wav");
   inTheHole = new Sound("media/sounds/ball_in_hole.wav");
 }
@@ -25,7 +26,7 @@ void Graphics::loadSounds(void) {
 */
 void Graphics::playSound(int num) {
   if (num == 0) {
-    soundMgr->playSound(golfPutt);
+    soundMgr->playSound(penguinJump);
   } else if (num == 1) {
     soundMgr->playSound(wallHit);
   } else if (num == 2) {

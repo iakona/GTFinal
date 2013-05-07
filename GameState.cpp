@@ -236,6 +236,7 @@ void GameState::getInput() {
   if (keyboard->isKeyDown(OIS::KC_SPACE)) {
     if(!graphics->getJumping()){
       physics->applyForce(0, 0, 14000, 0);
+      graphics->playSound(0);
       graphics->setJumping(true);
     }
   }
