@@ -48,11 +48,13 @@ void Physics::step(void) {
         nextStage();
         graphics->playSound(2);
       } else if (obA_proxy->m_collisionFilterGroup == COL_PENGUIN && obB_proxy->m_collisionFilterGroup == COL_CHECKPOINT) {
-        checkpoint = obB->getWorldTransform().getOrigin();
+        btVector3 checkpoint2 = obB->getWorldTransform().getOrigin();
         btBoxShape* shape = reinterpret_cast<btBoxShape*>(obB->getCollisionShape());
-        checkpoint += btVector3(0, shape->getHalfExtentsWithoutMargin().y(), 0);
-        checkpoint += btVector3(0, 25, 0);
-        // graphics->playSound(1);
+        checkpoint2 += btVector3(0, shape->getHalfExtentsWithoutMargin().y(), 0);
+        checkpoint2 += btVector3(0, 25, 0);
+        if (checkpoint2 != checkpoint)
+          graphics->playSound(1);
+        checkpoint = checkpoint2;
       }
     }
   }
@@ -126,7 +128,7 @@ void Physics::addStage1(void) {
   addWall("wall2", 0, 200, 240, 0, 80, 40, 40);
   addWall("wall3", 0, 280, 360, 0, 80, 40, 80);
   movePenguin(btVector3(0, 205, 0));
-  checkpoint = btVector3(0, 505, 0);
+  checkpoint = btVector3(0, 205, 0);
 }
 
 void Physics::movePenguin(btVector3 location) {
