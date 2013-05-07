@@ -11,7 +11,8 @@ class Wall : public GraphicsBody {
     virtual ~Wall(void);
 
   private:
-    
+    Ogre::SceneNode* particleNode;
+    Ogre::ParticleSystem* particle;
 };
 
 #endif // #ifndef __Wall_h_

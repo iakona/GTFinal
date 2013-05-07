@@ -26,15 +26,23 @@ Wall::Wall(Ogre::SceneManager* sceneMgr, std::string name,
   bool invisible = property & 4;
   sceneNode->setVisible(!invisible);
   entity->setMaterialName("Examples/Rockwall");
-  if (property & 2) {
-    Ogre::ParticleSystem* cp = sceneMgr->createParticleSystem(name + "cp", "Examples/PurpleFountain");
-    Ogre::SceneNode* cpNode = sceneNode->createChildSceneNode(name + "cpNode");
-    cpNode->attachObject(cp);
-    cp->fastForward(30);
+  if (property & 1) {
+    particle = sceneMgr->createParticleSystem(name + "cp", "Examples/PurpleFountain");
+    particleNode = sceneNode->createChildSceneNode(name + "cp");
+    particleNode->attachObject(particle);
+    particle->fastForward(30);
+  } else {
+    particle = NULL;
+    particleNode = NULL;
   }
-  
   setNode(sceneNode);
 }
 
 Wall::~Wall(void) {
+  if (particleNode && particle) {
+    Ogre::SceneManager* sceneMgr = particleNode->getCreator();
+    sceneMgr->destroyParticleSystem(particle);
+    sceneMgr->destroyEntity(particleNode->getName());
+    sceneMgr->destroySceneNode(particleNode);
+  }
 }
