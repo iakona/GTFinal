@@ -52,7 +52,7 @@ void Physics::step(void) {
         btBoxShape* shape = reinterpret_cast<btBoxShape*>(obB->getCollisionShape());
         checkpoint += btVector3(0, shape->getHalfExtentsWithoutMargin().y(), 0);
         checkpoint += btVector3(0, 25, 0);
-        graphics->playSound(1);
+        // graphics->playSound(1);
       }
     }
   }
@@ -66,7 +66,7 @@ void Physics::resetObject(PhysicsBody* object) {
   body->translate(-translate);
   body->translate(checkpoint);
   --lives;
-  std::cout << "Lives Remaining: " << lives << std::endl;
+  //std::cout << "Lives Remaining: " << lives << std::endl;
 }
 
 void Physics::initialize(void) {
@@ -76,17 +76,12 @@ void Physics::initialize(void) {
 }
 
 void Physics::nextStage(void) {
-  std::cout << "Removing Stage" <<std::endl;
   removeStage();
-  std::cout << "Remove Success" << std::endl;
   ++stageNumber;
   if (stageNumber == 0) {
-    std::cout << "Adding Stage 0" << std::endl;
     addStage0();
   } else if (stageNumber == 1) {
-    std::cout << "Adding Stage 1" << std::endl;
     addStage1();
-    std::cout << "Adding Stage 1 complete" << std::endl;
   } else {
     stageNumber = 0;
     addStage0();
@@ -131,6 +126,7 @@ void Physics::addStage1(void) {
   addWall("wall2", 0, 200, 240, 0, 80, 40, 40);
   addWall("wall3", 0, 280, 360, 0, 80, 40, 80);
   movePenguin(btVector3(0, 205, 0));
+  checkpoint = btVector3(0, 505, 0);
 }
 
 void Physics::movePenguin(btVector3 location) {
@@ -310,5 +306,5 @@ void Physics::stop(int index) {
 }
 
 bool Physics::gameOver() {
-  return lives <= 0;
+  return lives < 0;
 }
