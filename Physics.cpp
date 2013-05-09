@@ -82,7 +82,7 @@ void Physics::resetObject(PhysicsBody* object) {
 void Physics::initialize(void) {
   graphics->loadSounds();
   addPenguin("penguin");
-  addStage0();
+  addStage1();
 }
 
 void Physics::nextStage(void) {
@@ -194,19 +194,18 @@ void Physics::addStage1(void) {
   addWall("wall53", -600, 2545, 1750, 0, 70, 10, 30);
   addWall("wall54", -900, 2620, 1750, 0, 70, 10, 30);
   addWall("wall55", -750, 2700, 1750, 0, 70, 10, 30);
-  addWall("wall56", -1050, 2780, 1750, 0, 70, 10, 30, CHECKPOINT);
-  addWall("wall57", -1050, 2840, 1600, 0, 40, 10, 40);
-  addWall("wall58", -1050, 2920, 1500, 0, 40, 10, 40);
-  addWall("wall59", -1050, 3000, 1400, 0, 40, 10, 40);
-  addWall("wall60", -800, 3080, 1300, 0, 40, 10, 40);
-  addGoal("goal", -600, 3160, 1300, 0);
-  //addWall("top", -1050, 3000, 1400, 0, 40, 10, 40);
+  addWall("wall56", -1050, 2780, 1650, 0, 70, 10, 30, CHECKPOINT);
+  addWall("wall57", -1050, 2840, 1400, 0, 40, 10, 40);
+  addWall("wall58", -1050, 2920, 1200, 0, 40, 10, 40);
+  addWall("wall59", -1050, 3000, 1100, 0, 40, 10, 40);
+  addWall("wall60", -800, 3080, 1000, 0, 40, 10, 40);
+  addGoal("goal", -400, 2800, 1000, 0);
   addWall("pillarsw", 880, 2000, 0, 0, 120, 1600, 120);
   addWall("pillarnw", 880, 2000, 1600, 0, 120, 1600, 120);
   addWall("pillarne", -880, 2000, 1600, 0, 120, 1250, 120);
   addWall("pillarse", -880, 2000, 0, 0, 120, 1600, 120);
-  movePenguin(btVector3(0, 505, 0));
-  //movePenguin(btVector3(-1050, 2905, 1600));
+  //movePenguin(btVector3(0, 505, 0));
+  movePenguin(btVector3(-1050, 2905, 1600));
   checkpoint = btVector3(0, 505, 0);
 }
 

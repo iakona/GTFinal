@@ -211,6 +211,10 @@ void GameState::update(double timeSinceLastFrame) {
     shutdown();
     return;
   }
+  if (physics->getStage() >= 2) {
+    health->setProperty("Visible", "True");
+    showHealth = true;
+  }
   UpdateGUI();
   if (physics->gameOver()) {
     CEGUI::WindowManager::getSingleton().destroyWindow( "CEGUI/GameGUI" );

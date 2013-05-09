@@ -44,7 +44,7 @@ void InstructionState::createScene() {
 
   // instructions
   CEGUI::Window *instructions = wmgr.createWindow("TaharezLook/StaticText", "CEGUI/Instructions");
-  instructions->setText("Notice: This is a temporary UI, will update if we have time\n \n \n \n \nControls:\n \nMove forward with W or up arrow\nMove backward with S or down arrow\nStraft left with A or left arrow\nStraft right with D or right arrow\nTurn left with Q\nTurn right with R\nJump with Spacebar");
+  instructions->setText("Story:\n \nThe Frost, it freezes everything it touches.\nAccording to legends passed down from penguin to penguin, the only way to stop the Frost is\nto gather the three Lost Souls of the Magi. With it, one is granted the ability to cast the\nSunshine spell that will end the Frost. As the last surviving penguin with knowledge of the\nlegends, Quin sets out on a journey to save all penguin kind.\n \n \n \nControls:\n \nMove the mouse to change the camera angle.\nPress W or the up arrow to move Quin forward.\nPress S or the down arrow to move Quin backward.\nPress A or the left arrow to straft left.\nPress D or the right arrow to straft right.\nPress Q to turn Quin left.\nPress E to turn Quin right.\nNote: You can also use the mouse to turn Quin.\nPress the spacebar to jump.\nNote: Quin is able to jump mid-air if he hasn't jump before falling.");
   instructions->setSize(CEGUI::UVector2(CEGUI::UDim(0.8, 0), CEGUI::UDim(0.8, 0)));
   instructions->setPosition(CEGUI::UVector2(CEGUI::UDim(0.1, 0), CEGUI::UDim(0.05, 0)));
   window->addChildWindow(instructions);
