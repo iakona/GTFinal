@@ -204,8 +204,8 @@ void Physics::addStage1(void) {
   addWall("pillarnw", 880, 2000, 1600, 0, 120, 1600, 120);
   addWall("pillarne", -880, 2000, 1600, 0, 120, 1250, 120);
   addWall("pillarse", -880, 2000, 0, 0, 120, 1600, 120);
-  //movePenguin(btVector3(0, 505, 0));
-  movePenguin(btVector3(-1050, 2905, 1600));
+  movePenguin(btVector3(0, 505, 0));
+  //movePenguin(btVector3(-1050, 2905, 1600));
   checkpoint = btVector3(0, 505, 0);
 }
 
