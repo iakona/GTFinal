@@ -82,7 +82,7 @@ void Physics::resetObject(PhysicsBody* object) {
 void Physics::initialize(void) {
   graphics->loadSounds();
   addPenguin("penguin");
-  addStage1();
+  addStage0();
 }
 
 void Physics::nextStage(void) {
