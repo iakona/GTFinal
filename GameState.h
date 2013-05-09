@@ -26,12 +26,16 @@ class GameState : public AppState {
     void update(double timeSinceLastFrame);
     void getInput();
 
+    bool returnToGame(const CEGUI::EventArgs &e);
+    bool backToTitle(const CEGUI::EventArgs &e);
+
   private:
     Ogre::SceneNode *PenguinNode;
     bool m_bQuit;
     Graphics* graphics;
     Physics* physics;
     Ogre::Real limit;
+    bool isPaused;
 };
  
 #endif

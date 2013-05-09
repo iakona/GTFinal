@@ -5,6 +5,7 @@ using namespace Ogre;
 CEGUI::Window *face;
 CEGUI::Window *life;
 CEGUI::Window *health;
+CEGUI::Window *pauseWindow;
 
 float hp;
 bool showHealth;
@@ -25,6 +26,7 @@ CEGUI::MouseButton convertButton2(OIS::MouseButtonID buttonID) {
 GameState::GameState() {
   m_bQuit = false;
   m_FrameEvent = Ogre::FrameEvent();
+  isPaused = false;
 }
  
 void GameState::enter() {
@@ -106,7 +108,30 @@ void GameState::createScene() {
   health->setProperty("Visible", "False");
   gameWindow->addChildWindow(health);
 
+  // Pause menu
+  pauseWindow = wmgr.createWindow("TaharezLook/StaticText", "CEGUI/PauseWindow");
+  pauseWindow->setSize(CEGUI::UVector2(CEGUI::UDim(0.4, 0), CEGUI::UDim(0.35, 0)));
+  pauseWindow->setPosition(CEGUI::UVector2(CEGUI::UDim(0.3, 0), CEGUI::UDim(0.35, 0)));
+  pauseWindow->setProperty("Visible", "False");
+  gameWindow->addChildWindow(pauseWindow);
+
+  CEGUI::Window *ret = wmgr.createWindow("TaharezLook/Button", "CEGUI/ReturnToGameButton");
+  ret->setText("Return to Game");
+  ret->setSize(CEGUI::UVector2(CEGUI::UDim(0.8, 0), CEGUI::UDim(0.2, 0)));
+  ret->setPosition(CEGUI::UVector2(CEGUI::UDim(0.1, 0), CEGUI::UDim(0.25, 0)));
+  pauseWindow->addChildWindow(ret);
+
+  CEGUI::Window *bac = wmgr.createWindow("TaharezLook/Button", "CEGUI/BackToTitleButton");
+  bac->setText("Back to Title");
+  bac->setSize(CEGUI::UVector2(CEGUI::UDim(0.8, 0), CEGUI::UDim(0.2, 0)));
+  bac->setPosition(CEGUI::UVector2(CEGUI::UDim(0.1, 0), CEGUI::UDim(0.55, 0)));
+  pauseWindow->addChildWindow(bac);
+  
   CEGUI::System::getSingleton().setGUISheet(gameWindow);
+
+  // event calls
+  ret->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&GameState::returnToGame, this));
+  bac->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&GameState::backToTitle, this));
 }
  
 void GameState::UpdateGUI() {
@@ -139,22 +164,21 @@ void GameState::exit() {
 }
 
 bool GameState::keyPressed(const OIS::KeyEvent &keyEventRef) {
-  if (OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_ESCAPE)) {
+  if (OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_N)) {
     CEGUI::WindowManager::getSingleton().destroyWindow( "CEGUI/GameGUI" );
     popAllAndPushAppState(findByName("MenuState"));
     return true;
   }
 
- /*********************************************
-  * MAKE SURE TO REMOVE IN FINAL VERSION!!!!! *
-  *********************************************/
-  if (OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_N)) {
-    if(showHealth){
-      health->setProperty("Visible", "False");
-      showHealth = false;
-    } else{
-      health->setProperty("Visible", "True");
-      showHealth = true;
+  if (OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_ESCAPE)) {
+    if(isPaused){
+      isPaused = false;
+      pauseWindow->setProperty("Visible", "False");
+      CEGUI::MouseCursor::getSingleton().hide();
+    } else {
+      isPaused = true;
+      pauseWindow->setProperty("Visible", "True");
+      CEGUI::MouseCursor::getSingleton().show();
     }
   }
 
@@ -174,13 +198,14 @@ bool GameState::keyReleased(const OIS::KeyEvent &keyEventRef) {
 bool GameState::mouseMoved(const OIS::MouseEvent &evt) {
   CEGUI::System &sys = CEGUI::System::getSingleton();
   sys.injectMouseMove(evt.state.X.rel, evt.state.Y.rel);
-
-  physics->rotate(0, Ogre::Degree(-evt.state.X.rel * 0.1).valueRadians());
+  if(!isPaused){
+    physics->rotate(0, Ogre::Degree(-evt.state.X.rel * 0.1).valueRadians());
   
-  if((evt.state.Y.rel > 0 && limit <= 180) || (evt.state.Y.rel < 0 && limit >= -30)){
-    limit += evt.state.Y.rel;
-      m_pCamera->move(Ogre::Vector3(0.0,evt.state.Y.rel,0.0));
-      m_pCamera->pitch(Ogre::Degree(-evt.state.Y.rel*0.1));
+    if((evt.state.Y.rel > 0 && limit <= 180) || (evt.state.Y.rel < 0 && limit >= -30)){
+      limit += evt.state.Y.rel;
+        m_pCamera->move(Ogre::Vector3(0.0,evt.state.Y.rel,0.0));
+        m_pCamera->pitch(Ogre::Degree(-evt.state.Y.rel*0.1));
+    }
   }
   // Scroll wheel.
   if (evt.state.Z.rel)
@@ -218,12 +243,15 @@ void GameState::update(double timeSinceLastFrame) {
   UpdateGUI();
   if (physics->gameOver()) {
     CEGUI::WindowManager::getSingleton().destroyWindow( "CEGUI/GameGUI" );
+    CEGUI::WindowManager::getSingleton().destroyWindow( "CEGUI/PauseWindow" );
     popAllAndPushAppState(findByName("MenuState"));
   }
 }
 
 void GameState::getInput() {
+if(!isPaused){
   OIS::Keyboard* keyboard = OgreFramework::getSingletonPtr()->m_pKeyboard;
+
   if (keyboard->isKeyDown(OIS::KC_Q)) {
     physics->rotate(0, Ogre::Degree(3).valueRadians());
   }
@@ -251,4 +279,18 @@ void GameState::getInput() {
       graphics->setJumping(true);
     }
   }
+}
+}
+
+bool GameState::returnToGame(const CEGUI::EventArgs &e) {
+  isPaused = false;
+  pauseWindow->setProperty("Visible", "False");
+  CEGUI::MouseCursor::getSingleton().hide();
+}
+
+bool GameState::backToTitle(const CEGUI::EventArgs &e) {
+  isPaused = false;
+  CEGUI::WindowManager::getSingleton().destroyWindow( "CEGUI/GameGUI" );
+  CEGUI::WindowManager::getSingleton().destroyWindow( "CEGUI/PauseWindow" );
+  popAllAndPushAppState(findByName("MenuState"));
 }
