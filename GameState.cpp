@@ -116,7 +116,7 @@ void GameState::createScene() {
   gameWindow->addChildWindow(pauseWindow);
 
   CEGUI::Window *ret = wmgr.createWindow("TaharezLook/Button", "CEGUI/ReturnToGameButton");
-  ret->setText("Return to Game");
+  ret->setText("Resume Game");
   ret->setSize(CEGUI::UVector2(CEGUI::UDim(0.8, 0), CEGUI::UDim(0.2, 0)));
   ret->setPosition(CEGUI::UVector2(CEGUI::UDim(0.1, 0), CEGUI::UDim(0.25, 0)));
   pauseWindow->addChildWindow(ret);
@@ -139,7 +139,7 @@ void GameState::UpdateGUI() {
   s << physics->getLives();
   life->setProperty("Text", "x"+s.str());
 
-  if(showHealth){
+  if(showHealth&&!isPaused){
     hp -= 0.0005;
     if(hp <= 0.0){
       hp = 1.0f;
@@ -164,12 +164,6 @@ void GameState::exit() {
 }
 
 bool GameState::keyPressed(const OIS::KeyEvent &keyEventRef) {
-  if (OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_N)) {
-    CEGUI::WindowManager::getSingleton().destroyWindow( "CEGUI/GameGUI" );
-    popAllAndPushAppState(findByName("MenuState"));
-    return true;
-  }
-
   if (OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_ESCAPE)) {
     if(isPaused){
       isPaused = false;

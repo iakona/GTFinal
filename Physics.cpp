@@ -112,7 +112,7 @@ void Physics::addStage0(void) {
   addWall("wall2", 0, 600, 240, 0, 80, 40, 40);
   addWall("wall3", 0, 680, 360, 0, 80, 40, 80);
   addWall("wall4", 0, 680, 1080, 0, 240, 40, 240);  // platform 1
-  addWall("wall5", -520, 600, 1160, 0, 40, 40, 80);  // stairs right of platform, this is a small jumping puzzle leading to the first room
+  addWall("wall5", -520, 600, 1160, 0, 40, 40, 80);
   addWall("wall6", -760, 400, 1640, 0, 40, 80, 40);
   addWall("wall7", -1080, 480, 2000, 0, 80, 20, 80);
   addWall("wall8", -920, 560, 2160, 0, 20, 20, 120);
