@@ -238,7 +238,7 @@ void GameState::update(double timeSinceLastFrame) {
   if (physics->gameOver()) {
     CEGUI::WindowManager::getSingleton().destroyWindow( "CEGUI/GameGUI" );
     CEGUI::WindowManager::getSingleton().destroyWindow( "CEGUI/PauseWindow" );
-    popAllAndPushAppState(findByName("MenuState"));
+    popAllAndPushAppState(findByName("GameOverState"));
   }
 }
 

@@ -6,6 +6,7 @@
 #include "MenuState.h"
 #include "GameState.h"
 #include "InstructionState.h"
+#include "GameOverState.h"
  
 class PenguinApp {
   public:

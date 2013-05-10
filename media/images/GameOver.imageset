@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Imageset Name="GameOver" Imagefile="GameOver.png" >
+       <Image Name="game_over_image" XPos="0" YPos="0"  Width="640" Height="180" />
+</Imageset>
+
+
