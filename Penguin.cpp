@@ -2,11 +2,6 @@
 
 Penguin::Penguin(Ogre::SceneManager* sceneMgr, std::string name) {
   Ogre::Entity* entPenguin = sceneMgr->createEntity(name, "penguin.mesh");
-  // printf("HAS ANIMATION STATE??? = ");
-  // if(entPenguin->hasAnimationState("Idle"))
-  //   printf("TRUE\n");
-  // else
-  //   printf("FALSE\n");
   mAnimationState = entPenguin->getAnimationState("amuse");
   mAnimationState->setLoop(true);
   mAnimationState->setEnabled(true);

@@ -59,9 +59,13 @@ void Physics::step(void) {
         btBoxShape* shape = reinterpret_cast<btBoxShape*>(obB->getCollisionShape());
         checkpoint2 += btVector3(0, shape->getHalfExtentsWithoutMargin().y(), 0);
         checkpoint2 += btVector3(0, 25, 0);
-        if (checkpoint2 != checkpoint)
+        PhysicsBody* object = reinterpret_cast<PhysicsBody*>(obA->getUserPointer());
+        btRigidBody* body = object->getBody();
+        btVector3 translate = body->getCenterOfMassPosition();
+        if (checkpoint2 != checkpoint && translate.y() >= checkpoint2.y()) {
           graphics->playSound(1);
-        checkpoint = checkpoint2;
+          checkpoint = checkpoint2;
+        }
       }
     }
   }
@@ -119,7 +123,7 @@ void Physics::addStage0(void) {
   addWall("wall12_2", -230, 940, 2200, 0, 15, 10, 40);
   addWall("wall12_3", -170, 1020, 2140, 0, 15, 10, 40);
   addWall("wall12_4", -110, 1090, 2080, 0, 15, 10, 40);
-  addWall("wall12_5", -50, 1160, 2210, 0, 15, 10, 40);
+  addWall("wall12_5", -50, 1160, 2210, 0, 15, 10, 40, CHECKPOINT);
   addWall("wall12_6", -10, 900, 1880, 0, 15, 10, 40);
   addWall("wall12_7", -40, 750, 1480, 0, 50, 5, 50);
   addWall("wall12_8", 30, 1250, 2280, 0, 32, 20, 25);
@@ -131,9 +135,7 @@ void Physics::addStage0(void) {
 }
 
 void Physics::addStage1(void) {
-  //   addKillBox("killBox0", 0, 0, 0, 0, 8000, 0, 8000);
   addGround("ground", 0, 0, 0, 0, 8000, 0, 8000, KILLBOX);
-  //addGoal("goal", -60, 885, 3640, 0);
   addWall("south0", 0, 440, 0, 0, 760, 40, 120);   // start
   addWall("wall1", 0, 520, 160, 0, 80, 40, 40);  // stairs 1
   addWall("wall2", 0, 600, 240, 0, 80, 40, 40);
@@ -205,7 +207,6 @@ void Physics::addStage1(void) {
   addWall("pillarne", -880, 2000, 1600, 0, 120, 1250, 120);
   addWall("pillarse", -880, 2000, 0, 0, 120, 1600, 120);
   movePenguin(btVector3(0, 505, 0));
-  //movePenguin(btVector3(-1050, 2905, 1600));
   checkpoint = btVector3(0, 505, 0);
 }
 
@@ -449,23 +450,6 @@ void Physics::addWall(std::string name, btScalar x, btScalar y, btScalar z, btSc
   PhysicsBody* physicsBody = new PhysicsBody(body, motionState);
   addGameObject(physicsBody, 1, name, x, y, z, angle, l, h, w, property);
 }
-
-// void Physics::addKillBox(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w) {
-//   btCollisionShape* shape = new btBoxShape(btVector3(l,h,w));
-// 
-//   btScalar mass = 0;
-//   btVector3 intertia(0,0,0);
-//   shape->calculateLocalInertia(mass,intertia);
-// 
-//   MotionState* motionState = new MotionState(btTransform(btQuaternion(angle, 0, 0),btVector3(x, y, z)), graphics, name);
-// 
-//   btRigidBody::btRigidBodyConstructionInfo info(mass,motionState,shape,intertia);
-//   btRigidBody* body = new btRigidBody(info);
-//   body->setActivationState(DISABLE_DEACTIVATION);
-// 
-//   PhysicsBody* physicsBody = new PhysicsBody(body, motionState);
-//   addGameObject(physicsBody, 2, name, x, y, z, angle, l, h, w);
-// }
 
 void Physics::addGoal(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle) {
   btCollisionShape* shape = new btBoxShape(btVector3(50,50,50));

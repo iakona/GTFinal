@@ -27,7 +27,6 @@ class Physics {
     void addGameObject(PhysicsBody* obj, int type, std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w, int property = 0);
     void addPenguin(std::string name);
     void addWall(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w, int property = 0);
-    void addKillBox(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w);
     void addGoal(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle);
     void addGround(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle, btScalar l, btScalar h, btScalar w, int property = 0);
     void removeStage(void);
