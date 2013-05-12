@@ -30,7 +30,8 @@ Physics::Physics(Graphics* graphic) {
   dynamicWorld->getSolverInfo().m_splitImpulse = true;
   graphics = graphic;
   stageNumber = 0;
-  lives = 3;
+  lives = 5;
+  jumping = true;
 }
 
 Physics::~Physics(void) {
@@ -95,10 +96,11 @@ void Physics::nextStage(void) {
   if (stageNumber == 0) {
     addStage0();
   } else if (stageNumber == 1) {
-    addStage1();
-  } else if (stageNumber == 2) {
     addStage2();
+  } else if (stageNumber == 2) {
+    addStage1();
   } else {
+    lives = -1;
     stageNumber = 0;
     addStage0();
   }
@@ -132,6 +134,7 @@ void Physics::addStage0(void) {
   addWall("wall14", 96, 390, 2690, 0, 804, 400, 50);   // Big Wall Bottom
   addWall("wall15", 100, 1190, 2680, 0, 800, 400, 40); // Big Wall Top
   addWall("wall16", -60, 795, 3640, 0, 100, 10, 100); // End?
+  jumping = true;
 }
 
 void Physics::addStage1(void) {
@@ -208,6 +211,7 @@ void Physics::addStage1(void) {
   addWall("pillarse", -880, 2000, 0, 0, 120, 1600, 120);
   movePenguin(btVector3(0, 505, 0));
   checkpoint = btVector3(0, 505, 0);
+  jumping = true;
 }
 
 void Physics::addStage2(void) {
@@ -364,6 +368,7 @@ void Physics::addStage2(void) {
 
   movePenguin(btVector3(25, 25, -100));
   checkpoint = btVector3(25, 25, -100);
+  jumping = false;
 }
 
 void Physics::movePenguin(btVector3 location) {
@@ -452,7 +457,7 @@ void Physics::addWall(std::string name, btScalar x, btScalar y, btScalar z, btSc
 }
 
 void Physics::addGoal(std::string name, btScalar x, btScalar y, btScalar z, btScalar angle) {
-  btCollisionShape* shape = new btBoxShape(btVector3(50,50,50));
+  btCollisionShape* shape = new btBoxShape(btVector3(10,10,10));
 
   btScalar mass = 0;
   btVector3 intertia(0,0,0);

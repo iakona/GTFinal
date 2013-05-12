@@ -36,6 +36,7 @@ class Physics {
     int getStage() { return stageNumber; };
     int getLives() { return lives; };
     bool gameOver();
+    bool has_jumping() { return jumping; }
 
   private:
     btDefaultCollisionConfiguration* collisionConfiguration;
@@ -47,6 +48,7 @@ class Physics {
     Graphics* graphics;
     int stageNumber;
     int lives;
+    bool jumping;
 };
 
 #endif // #ifndef __Physics_h_

@@ -35,6 +35,11 @@ void GameState::enter() {
   m_pSceneMgr = OgreFramework::getSingletonPtr()->m_pRoot->createSceneManager(ST_GENERIC, "GameSceneMgr");
   m_pSceneMgr->setAmbientLight(Ogre::ColourValue(0.4f, 0.4f, 0.4f));
   m_pSceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
+  Ogre::Light* dirLight = m_pSceneMgr->createLight("dirLight");
+  dirLight->setType(Ogre::Light::LT_DIRECTIONAL);
+  dirLight->setDiffuseColour(Ogre::ColourValue(0.4f, 0.4f, 0.4f));
+  dirLight->setSpecularColour(Ogre::ColourValue(0.4f, 0.4f, 0.4f));
+  dirLight->setDirection(Ogre::Vector3(0, -1, 0));
  
   m_pCamera = m_pSceneMgr->createCamera("GameCam");
   m_pCamera->setPosition(Vector3(0, 15, -300));
@@ -195,7 +200,7 @@ bool GameState::mouseMoved(const OIS::MouseEvent &evt) {
   if(!isPaused){
     physics->rotate(0, Ogre::Degree(-evt.state.X.rel * 0.1).valueRadians());
   
-    if((evt.state.Y.rel > 0 && limit <= 180) || (evt.state.Y.rel < 0 && limit >= -30)){
+    if((evt.state.Y.rel > 0 && limit <= 360) || (evt.state.Y.rel < 0 && limit >= -30)){
       limit += evt.state.Y.rel;
         m_pCamera->move(Ogre::Vector3(0.0,evt.state.Y.rel,0.0));
         m_pCamera->pitch(Ogre::Degree(-evt.state.Y.rel*0.1));
@@ -230,9 +235,12 @@ void GameState::update(double timeSinceLastFrame) {
     shutdown();
     return;
   }
-  if (physics->getStage() >= 2) {
+  if (physics->getStage() == 1) {
     health->setProperty("Visible", "True");
     showHealth = true;
+  } else{
+    health->setProperty("Visible", "False");
+    showHealth = false;
   }
   UpdateGUI();
   if (physics->gameOver()) {
@@ -267,7 +275,7 @@ if(!isPaused){
   }
 
   if (keyboard->isKeyDown(OIS::KC_SPACE)) {
-    if(!graphics->getJumping()){
+    if(!graphics->getJumping() && physics->has_jumping()){
       physics->applyForce(0, 0, 14000, 0);
       graphics->playSound(0);
       graphics->setJumping(true);
